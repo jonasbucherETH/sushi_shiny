@@ -10,12 +10,34 @@ tabItem(
         solidHeader = TRUE,
         status = "primary",
         # inputs
-        actionButton(
-          inputId = "goButtonUMAP",
-          label = "Apply parameters",
-          icon = NULL
+        
+        
+        numericInput(
+          inputId = "n_neighborsUMAP",
+          label = "The size of local neighborhood 
+          used for manifold approximation",
+          min = 2, max = 100,
+          value = 15, step = 1
         ),
+        
+        selectInput(
+          inputId = "distanceMetricUMAP",
+          label = "Type of distance metric to use to find nearest neighbors",
+          choices = c("euclidean","cosine","manhattan",
+                      "hamming","correlation","categorical")
+        ),
+        
         br(), br(),
+        actionBttn(
+          inputId = "paramButtonTSNE",
+          label = "Apply parameters",
+          # icon = icon("check"),
+          style = "simple",
+          color = "primary",
+          size = "md",
+          block = FALSE,
+          no_outline = TRUE
+        ),
 
         selectInput(
           inputId = "excludeSamplesUMAP",

@@ -29,13 +29,15 @@ tabItem(
         ),        
         numericInput(
           inputId = "thetaTSNE",
-          label = "theta: Speed/accuracy trade-off. Set to 0.0 for exact TSNE",
+          label = HTML("&theta;: Speed/accuracy trade-off.
+                       Set to 0.0 for exact TSNE"),
+          # label = HTML("&eta;:"),
           min = 0, max = 1,
           value = 0.5, step = 0.1
         ),        
         numericInput(
           inputId = "etaTSNE",
-          label = paste0(expression(eta), ": learning rate"),
+          label = HTML("&eta;: learning rate"),
           min = 50, max = 800,
           value = 200, step = 50
         ),
@@ -43,7 +45,7 @@ tabItem(
         actionBttn(
           inputId = "paramButtonTSNE",
           label = "Apply parameters",
-          icon = icon("check"),
+          # icon = icon("check"),
           style = "simple",
           color = "primary",
           size = "md",
@@ -91,42 +93,62 @@ tabItem(
         collapsible = TRUE,
         collapsed = FALSE,
         
-        
-        actionBttn(
-          inputId = "displayButtonTSNE",
-          label = "Apply display options",
-          icon = icon("text-size"),
-          style = "simple",
-          color = "primary",
-          size = "md",
-          block = FALSE,
-          no_outline = TRUE
-        ),
-        br(), br(),
-        # actionButton("reset", "Default colours", icon = icon("undo"))
-        
-        #### ----------------------------
-        selectizeInput(
-          inputId = "select",
-          "Select:",
-          choices = "",
-          selected = "",
-          multiple = TRUE
-        ),
-        
-        # selectizeInput("select", "Select:", 
-        #                choices = as.list(unique(groupingVariables$Population)), 
-        #                # selected = "X1", 
-        #                multiple = TRUE),
-        
-        uiOutput('myPanel'),
+        # actionBttn(
+        #   inputId = "displayButtonTSNE",
+        #   label = "Apply chosen colours",
+        #   icon = icon("text-size"),
+        #   style = "simple",
+        #   color = "primary",
+        #   size = "md",
+        #   block = FALSE,
+        #   no_outline = TRUE
+        # ),
+        # br(), br(),
+        # # actionButton("reset", "Default colours", icon = icon("undo"))
+        # 
+        # #### ----------------------------
+        # selectizeInput(
+        #   inputId = "select",
+        #   label = "Select:",
+        #   choices = "",
+        #   selected = "",
+        #   multiple = TRUE
+        # ),
+        # 
+        # # selectizeInput("select", "Select:", 
+        # #                choices = as.list(unique(groupingVariables$Population)), 
+        # #                # selected = "X1", 
+        # #                multiple = TRUE),
+        # 
+        # uiOutput('myPanel'),
         
         #### ---------------------------
+        
+        fluidRow(
+          column(
+            width = 9,
+            textInput(
+              inputId = "tsneTitle",
+              label = "Title of plot",
+              value = ""
+            )
+          ),
+          column(
+            width = 3,
+            br(),
+            checkboxInput(
+              inputId = "displayTitleTSNE",
+              label = "Display Title",
+              # label = "",
+              value = FALSE
+            )
+          )
+        ),
         
         checkboxInput(
           inputId = "sampleLabelsTSNE",
           label = "Display sample labels",
-          value = FALSE
+          value = TRUE
         ),
         
         ### no choices, selected = "" as default
@@ -169,9 +191,51 @@ tabItem(
           value = 12, step = 0.5
         ),
 
-      ) # close box
-    ), # close column
+      ), # close box
+      
+    # ), # close column
     
+  # ), # close fluidRow 1
+  # fluidRow(
   
-  ) # close fluidRow
+
+      box(
+        title = "Custom colours",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        actionBttn(
+          inputId = "displayButtonTSNE",
+          label = "Apply chosen colours",
+          icon = icon("text-size"),
+          style = "simple",
+          color = "primary",
+          size = "md",
+          block = FALSE,
+          no_outline = TRUE
+        ),
+        br(), br(),
+        # actionButton("reset", "Default colours", icon = icon("undo"))
+        
+        #### ----------------------------
+        selectizeInput(
+          inputId = "select",
+          label = "Select:",
+          choices = "",
+          selected = "",
+          multiple = TRUE
+        ),
+        
+        # selectizeInput("select", "Select:", 
+        #                choices = as.list(unique(groupingVariables$Population)), 
+        #                # selected = "X1", 
+        #                multiple = TRUE),
+        
+        uiOutput('colourPanelTSNE'),
+      )
+    )
+  )
+  
 ) # close tabItem

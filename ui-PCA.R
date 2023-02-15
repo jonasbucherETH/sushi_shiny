@@ -2,6 +2,33 @@ tabItem(
   tabName = "tab-PCA",
   fluidRow( ### NOTE: 1 row has width = 12
     column(
+      width = 9, # 3 + 9 = 12 to fill row
+      box(
+        title = "PCA Plots",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        downloadBttn(
+          outputId = "downloadPCA",
+          label = "Download PCA Plot (PDF)",
+          style = "unite",
+          color = "primary",
+          size = "sm",
+          block = FALSE,
+          no_outline = TRUE,
+          icon = shiny::icon("download")
+        ),
+        br(), br(),
+        plotOutput(
+          outputId = "pcaStatic",
+          # height = "80vh",
+          # width = "100%",
+          inline = T
+        )
+      ), # close box
+    ), # close column
+    
+    column(
       width = 3,
       box(
         title = "Plot Settings",
@@ -10,21 +37,6 @@ tabItem(
         status = "primary",
         collapsible = TRUE,
         collapsed = FALSE,
-        
-        # tags$head(
-        #   tags$style(HTML('.shiny-split-layout>div {overflow: hidden;}')),
-        # ),
-        
-        # checkboxInput(
-        #   inputId = "displayTitlePCA",
-        #   label = "Display Title",
-        #   value = FALSE
-        # ),
-        # textInput(
-        #   inputId = "pcaTitle",
-        #   label = "Title of PCA plot",
-        #   value = ""
-        # ),
         fluidRow(
           column(
             width = 9,
@@ -64,42 +76,8 @@ tabItem(
           choices = "",
           selected = ""
         ),
-        
-        # selectInput(
-        #   inputId = "excludeSamplesPCA",
-        #   label = "Select samples to exclude",
-        #   choices = "",
-        #   selected = ""
-        # ),
-        
-        # tags$div(sliderInput("slide1", "Slider1", min = 0, max=10, value=4),  style="display:inline-block"),
         tags$b("Select PCs"),
-        # hr(),
-        # br(),
-        
-        # tags$div(
-        #   selectInput(
-        #     inputId = "pickFactor1PCA",
-        #     label = "x-axis",
-        #     choices = "PC1",
-        #     selected = "PC1",
-        #     width = "100px"
-        #     ),
-        #   # width = "200%",
-        #   style="display:inline-block"
-        #   ),
-        # tags$div(
-        #   selectInput(
-        #     inputId = "pickFactor2PCA",
-        #     label = "y-axis",
-        #     choices = "PC2",
-        #     selected = "PC2",
-        #     width = "100px"
-        #   ),
-        #   # width = "200%",
-        #   style="display:inline-block"
-        # ),
-        
+
         fluidRow(
           column(
             selectInput(
@@ -122,18 +100,14 @@ tabItem(
             width = 6
           )
         ),
-
-        
         br(),
-        
-        # tags$b("Keep PCA axes proportional to variance?"),
         checkboxInput(
           inputId = "pcaAxesProp",
           label = "Keep axes proportional",
           # label = "",
           value = TRUE
         ),
-
+        
         sliderInput(
           inputId = "pcaPlotWidth",
           label = "Width of plot",
@@ -169,100 +143,44 @@ tabItem(
             width = 6
           )
         ),
-
-
-        # selectInput(
-        #   inputId = "pickFactor1PCA",
-        #   label = "Select PC for x-axis",
-        #   choices = c("PC1","PC2","PC3","PC4","PC5"),
-        #   selected = "PC1"
-        # ),
-        # selectInput(
-        #   inputId = "pickFactor2PCA",
-        #   label = "Select PC for y-axis",
-        #   choices = c("PC1","PC2","PC3","PC4","PC5"),
-        #   selected = "PC2"
-        # ),
-
-        # selectInput("pickFactor1PCA", "Select PC for x-axis", choices = colnames(pca_tab)[PC_indeces]),
-        # selectInput("pickFactor2PCA", "Select PC for y-axis", choices = colnames(pca_tab)[PC_indeces], selected = "PC2")
-      ) # close box
-    ), # close column
-
-    column(
-      width = 9, # 3 + 9 = 12 to fill row
+      ), # close box
       box(
-        title = "PCA Plots",
+        title = "Custom colours",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
-        # downloadButton(
-        #   outputId = "downloadPCA",
-        #   label = "Download PCA Plot (PDF)"
-        # ),
-        # div(
-        #   style="display:inline-block",
-        #   downloadBttn(
-        #     outputId = "downloadPCA",
-        #     label = "Download PCA Plot (PDF)",
-        #     style = "unite",
-        #     color = "primary",
-        #     size = "sm",
-        #     block = FALSE,
-        #     no_outline = TRUE,
-        #     icon = shiny::icon("download")
-        #   ),
-        #   style="float:right"
-        # ),
-        
-        downloadBttn(
-          outputId = "downloadPCA",
-          label = "Download PCA Plot (PDF)",
-          style = "unite",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        actionBttn(
+          inputId = "displayButtonPCA",
+          label = "Apply chosen colours",
+          icon = icon("text-size"),
+          style = "simple",
           color = "primary",
-          size = "sm",
+          size = "md",
           block = FALSE,
-          no_outline = TRUE,
-          icon = shiny::icon("download")
+          no_outline = TRUE
         ),
         br(), br(),
-        plotOutput(
-          outputId = "pcaStatic",
-          # height = "80vh",
-          # width = "100%",
-          inline = T
-        )
-      ), # close box
-    ), # close row
-      
-    # column(
-    #   width = 3,
-    #   box(
-    #     title = "Brush points",
-    #     width = NULL,
-    #     solidHeader = TRUE,
-    #     status = "primary",
-    #     h4("Brushed points"), 
-    #     # verbatimTextOutput("brush_info")
-    #     tableOutput("brush_info"),
-    #     br(), br(),
-    #     textInput(
-    #       inputId = "removeThesePointsPCA",
-    #       label = "Type sample(s) to remove",
-    #       value = ""  
-    #     ),
-    #     tags$b("Remove selected data and redo PCA?"),
-    #     actionButton(
-    #       inputId = "excludePointsPCA",
-    #       label = "Remove selected data",
-    #       icon = NULL
-    #     )
-    #   )
-    # ),
-    
-    # column(
-    #   width = 3,
-    # ),
+        # actionButton("reset", "Default colours", icon = icon("undo"))
+        
+        #### ----------------------------
+        selectizeInput(
+          inputId = "select",
+          label = "Select:",
+          choices = "",
+          selected = "",
+          multiple = TRUE
+        ),
+        
+        # selectizeInput("select", "Select:", 
+        #                choices = as.list(unique(groupingVariables$Population)), 
+        #                # selected = "X1", 
+        #                multiple = TRUE),
+        
+        uiOutput('colourPanelPCA'),
+      )
+    ), # close column
     
   fluidRow( 
     column(

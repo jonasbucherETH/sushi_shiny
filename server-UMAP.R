@@ -16,6 +16,9 @@ observe({
     observeEvent( # Event number 1
       {
         input$excludeSamplesUMAP
+        input$paramButtonUMAP
+        # input$n_neighborsUMAP 
+        # input$distanceMetricUMAP
         # input$sampleLabelsUMAP
         # input$pickFactor1UMAP
         # input$pickFactor2UMAP
@@ -32,9 +35,9 @@ observe({
         
         umapResult <- umap(
           X = datasetScaled,
-          n_neighbors = 15,
+          n_neighbors = input$n_neighborsUMAP,
           n_components = 2,
-          metric = "euclidean"
+          metric = input$distanceMetricUMAP
         ) # returns matrix
         
         UMAPTable <- data.frame(groupingVariables, umapResult, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
