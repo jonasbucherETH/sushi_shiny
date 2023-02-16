@@ -94,23 +94,14 @@ observe({
       {
         
         withProgress(message = "Generating t-SNE Plot. Please wait...", {
-          
-        # cat("1")
-        # # # TODO: omit selected samples/groups
-        # distanceMatrixTSNE <- distanceMatrixTSNE
-        # for (i in seq_along(factorlevTSNEels)){
-        #   colourList[i] <- paste0(col2hex(input[[paste0("GroupColour", i)]]), "FF")
-        # }
-        # colours <- NULL
-        # for (i in levTSNEels(as.factor(dataset[[input$colorGroupTSNE]]))) {
-        #   colours[i] <- colourList[i]
-        # }
-        # colours <- colours[names(colours) %in% input$TSNEGroups]
-        
         
         # ---------------------------- compute & prepare t-SNE
         nGrouping <- ncol(groupingVariables)
         
+        # if (input$normalizeTSNE) {
+        #   distanceMatrixTSNE <- normalize_input(distanceMatrixTSNE)
+        # }
+
         nDimsTSNE <- 2
         # distanceMatrixTSNE <- as.matrix(distanceMatrixTSNE)
         tsneResult <- Rtsne(
@@ -123,6 +114,7 @@ observe({
           theta = input$thetaTSNE, # default = 0.5; exact t-SNE = 0.0
           eta = input$etaTSNE, # learning rate; default = 200
           dims = nDimsTSNE
+          # normalize = input$normalizeTSNE
         ) # default: dims = 2
         
         ### perplexity: numeric; Perplexity parameter (should not be bigger than 3 * perplexity < nrow(X) - 1

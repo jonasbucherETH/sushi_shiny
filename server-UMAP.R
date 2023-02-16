@@ -1,8 +1,10 @@
 observe({
   withProgress(message = "Generating UMAP Plot. Please wait...", {
-    datasetScaled <- inputDataReactive()$datasetScaled
+    dataset <- inputDataReactive()$dataset
     groupingVariables <- inputDataReactive()$groupingVariables
-    vcfGenind <- inputDataReactive()$vcfGenind
+    datasetScaled <- inputDataReactive()$datasetScaled
+    
+    datasetUMAP <- datasetScaled
     
     nGrouping <- ncol(groupingVariables)
     gvList <- c(colnames(groupingVariables)[1:nGrouping], "-")
@@ -69,7 +71,7 @@ observe({
       {
         
         umapResult <- umap(
-          X = datasetScaled,
+          X = datasetUMAP,
           n_neighbors = input$n_neighborsUMAP,
           n_components = 2,
           metric = input$distanceMetricUMAP

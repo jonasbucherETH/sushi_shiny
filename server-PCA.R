@@ -1,13 +1,17 @@
 observe({
   # withProgress(message = "Generating PCA Plots. Please wait...", {
     vcfRaw <- inputDataReactive()$vcfRaw
-    vcfGenind <- inputDataReactive()$vcfGenind
+    dataset <- inputDataReactive()$dataset
     datasetScaled <- inputDataReactive()$datasetScaled
     groupingVariables <- inputDataReactive()$groupingVariables
     colourList <- inputDataReactive()$colourList
     
     groupingVarsCheckbox <- cbind(groupingVariables, bool = T)
-    datasetScaledPCA <- datasetScaled
+    
+    datasetPCA <- datasetScaled
+    
+    # datasetPCA <- datasetScaled
+
     output$sampleTablePCA <- DT::renderDataTable(
       groupingVariables,
       server = TRUE,
@@ -20,7 +24,7 @@ observe({
       s = input$sampleTablePCA_rows_selected
       if (length(s)) {
         cat('These samples are currently selected:\n\n')
-        cat(rownames(datasetScaled)[s], sep = '\n')
+        cat(rownames(datasetPCA)[s], sep = '\n')
       }
     })
     
@@ -85,12 +89,12 @@ observe({
         removeRowsPCA <- input$sampleTablePCA_rows_selected
         if (length(removeRowsPCA)) {
           s <- c(removeRowsPCA)
-          datasetScaledPCA <- datasetScaled[-s, ]
+          datasetPCA <- dataset[-s, ]
           groupingVariables <- groupingVariables[-s, ]
         }
         
         ##### compute PCA
-        pcaResults <- dudi.pca(datasetScaledPCA, center = TRUE, scale = TRUE, scan = FALSE, nf = 5)
+        pcaResults <- dudi.pca(datasetPCA, center = TRUE, scale = TRUE, scan = FALSE, nf = 5)
         
         
         nPC <- pcaResults$nf # number of (> 0) principal components
@@ -104,7 +108,7 @@ observe({
         pcaVarprop$PC <- factor(pcaVarprop$PC, levels = pcaVarprop$PC)
         
         
-        pcaTable <- data.frame(groupingVariables, pcaResults$li, stringsAsFactors = FALSE, row.names = rownames(datasetScaledPCA))
+        pcaTable <- data.frame(groupingVariables, pcaResults$li, stringsAsFactors = FALSE, row.names = rownames(datasetPCA))
         
         tabVarprop <- pcaVarprop
         for (i in 1:nPC) {
@@ -250,12 +254,12 @@ observe({
             
             # selectedList <<- append(selectedList, which(brushedPointsPCA$selected_))
             
-            # datasetScaledPCA$selected_ <<- brushedPointsPCA$selected_
+            # datasetPCA$selected_ <<- brushedPointsPCA$selected_
             
             # print("down")
-            # print(datasetScaledPCA$selected_)
+            # print(datasetPCA$selected_)
             
-            # cat(datasetScaledPCA$selected_)
+            # cat(datasetPCA$selected_)
             # brushedPointsID <- which(brushedPointsPCA$selected_ == FALSE)
             
             # output$brushInfo <- renderTable({

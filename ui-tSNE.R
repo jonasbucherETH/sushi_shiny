@@ -15,6 +15,11 @@ tabItem(
         #   label = "Apply parameters",
         #   icon = NULL
         # ),
+        # checkboxInput(
+        #   inputId = "normalizeTSNE",
+        #   label = "Normalize distance matrix (recommended for Euclidean distances)",
+        #   value = TRUE
+        # ),
         numericInput(
           inputId = "perplexityTSNE",
           label = "Perplexity parameter",
@@ -92,58 +97,6 @@ tabItem(
         status = "primary",
         collapsible = TRUE,
         collapsed = FALSE,
-        
-        # actionBttn(
-        #   inputId = "displayButtonTSNE",
-        #   label = "Apply chosen colours",
-        #   icon = icon("text-size"),
-        #   style = "simple",
-        #   color = "primary",
-        #   size = "md",
-        #   block = FALSE,
-        #   no_outline = TRUE
-        # ),
-        # br(), br(),
-        # # actionButton("reset", "Default colours", icon = icon("undo"))
-        # 
-        # #### ----------------------------
-        # selectizeInput(
-        #   inputId = "select",
-        #   label = "Select:",
-        #   choices = "",
-        #   selected = "",
-        #   multiple = TRUE
-        # ),
-        # 
-        # # selectizeInput("select", "Select:", 
-        # #                choices = as.list(unique(groupingVariables$Population)), 
-        # #                # selected = "X1", 
-        # #                multiple = TRUE),
-        # 
-        # uiOutput('myPanel'),
-        
-        #### ---------------------------
-        
-        # fluidRow(
-        #   column(
-        #     width = 9,
-        #     textInput(
-        #       inputId = "tsneTitle",
-        #       label = "Title of plot",
-        #       value = ""
-        #     )
-        #   ),
-        #   column(
-        #     width = 3,
-        #     br(),
-        #     checkboxInput(
-        #       inputId = "displayTitleTSNE",
-        #       label = "Display Title",
-        #       # label = "",
-        #       value = TRUE
-        #     )
-        #   )
-        # ),
         
         textInput(
           inputId = "tsneTitle",
