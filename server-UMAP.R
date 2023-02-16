@@ -86,9 +86,12 @@ observe({
             input$shapeGroupUMAP
             input$textSizeUMAP
             input$pointSizeUMAP
+            input$plotWidthUMAP
+            input$plotHeightUMAP
             # input$displayTitleUMAP
             input$displayButtonUMAP
             input$umapTitle
+            input$selectThemeUMAP
             
           },
             ignoreInit = F, # default = FALSE
@@ -133,6 +136,8 @@ observe({
               title = input$umapTitle
             )
             
+            themeUMAP <- paste0("theme_", input$selectThemeUMAP, "()")
+            themeUMAP <- eval(parse(text = themeUMAP))
             
             ### themes, axis labels ,legend etc
             plotUMAP <- plotUMAP + labs(
@@ -140,7 +145,7 @@ observe({
               y = "X2",
               color = input$colorGroupUMAP, shape = input$shapeGroupUMAP
             ) +
-              theme_bw() +
+              themeUMAP +
               theme(
                 axis.text.x = element_text(
                   colour = "grey20", size = input$textSizeUMAP, angle = 0, hjust = .5,
@@ -175,9 +180,8 @@ observe({
               {
                 plotUMAP
               },
-              # width = as.numeric(input$UMAPPlotWidth),
-              # height = as.numeric(input$UMAPPlotHeight)
-              # , res = 96
+              width = as.numeric(input$plotWidthUMAP),
+              height = as.numeric(input$plotHeightUMAP)
             )
           } # close Event number 2
         ) # close Event number 2

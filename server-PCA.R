@@ -1,5 +1,5 @@
 observe({
-  withProgress(message = "Generating PCA Plots. Please wait...", {
+  # withProgress(message = "Generating PCA Plots. Please wait...", {
     vcfRaw <- inputDataReactive()$vcfRaw
     vcfGenind <- inputDataReactive()$vcfGenind
     datasetScaled <- inputDataReactive()$datasetScaled
@@ -80,7 +80,8 @@ observe({
       ignoreInit = F, # If TRUE, then, when the eventified object is first created/initialized, don't trigger the action or (compute the value). The default is FALSE.
       ignoreNULL = F, # default = TRUE
       {
-        
+        withProgress(message = "Generating PCA Plots. Please wait...", {
+          
         removeRowsPCA <- input$sampleTablePCA_rows_selected
         if (length(removeRowsPCA)) {
           s <- c(removeRowsPCA)
@@ -132,13 +133,14 @@ observe({
             input$pickFactor2PCA
             req(input$colorGroupPCA)
             input$shapeGroupPCA
-            input$pcaPlotWidth
-            input$pcaPlotHeight
+            input$plotWidthPCA
+            input$plotHeightPCA
             input$textSizePCA
             input$pointSizePCA
             # input$displayTitlePCA
             input$displayButtonPCA
             input$pcaTitle
+            input$selectThemePCA
             # input$pcaBrush
             # input$excludeSamplesPCA
           },
@@ -149,10 +151,10 @@ observe({
             
             colsPCA <- paste0("c(", paste0("input$colPCA_", sort(input$selectizePCA), collapse = ", "), ")")
             # colsPCA <- paste0("c(", paste0("input$colPCA_", sort(unique(groupingVariables[[input$colorGroupPCA]])), collapse = ", "), ")")
-            print(colsPCA)
+            # print(colsPCA)
             colsPCA <- eval(parse(text = colsPCA))
             # colsPCA <- get(colsPCA)
-            print(colsPCA)
+            # print(colsPCA)
             
             if (is.null(colsPCA)) {
               colsPCA <- gg_fill_hue(length(sort(unique(groupingVariables[[input$colorGroupPCA]]))))
@@ -194,6 +196,8 @@ observe({
               title = input$pcaTitle
             )
             
+            themePCA <- paste0("theme_", input$selectThemePCA, "()")
+            themePCA <- eval(parse(text = themePCA))
             
             ### themes, axis labels ,legend etc
             plotPCA <- plotPCA + labs(
@@ -201,7 +205,7 @@ observe({
               y = paste0(input$pickFactor2PCA, " (", tabVarprop$pct[tabVarprop$PC == input$pickFactor2PCA], "% variance explained)"),
               color = input$colorGroupPCA, shape = input$shapeGroupPCA
             ) +
-              theme_bw() +
+              themePCA +
               theme(
                 axis.text.x = element_text(
                   colour = "grey20", size = input$textSizePCA, angle = 0, hjust = .5,
@@ -237,11 +241,11 @@ observe({
               {
                 plotPCA
               },
-              width = as.numeric(input$pcaPlotWidth),
-              height = as.numeric(input$pcaPlotHeight)
+              width = as.numeric(input$plotWidthPCA),
+              height = as.numeric(input$plotHeightPCA)
               # , res = 96
             )
-            
+
             # create id for data
             
             # selectedList <<- append(selectedList, which(brushedPointsPCA$selected_))
@@ -318,7 +322,8 @@ observe({
             # }) # close tryCatch
           }
         ) # close Event number 2
+      }) # close withProgress
       }
     ) # close Event number 1
-  }) # close withProgress
+  # }) # close withProgress
 }) # close observe

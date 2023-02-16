@@ -49,6 +49,12 @@ tabItem(
         ),
         
         selectInput(
+          inputId = "selectThemePCA",
+          label = "Select theme",
+          choices = c("bw", "light", "minimal", "classic"),
+          selected = "bw"
+        ),
+        selectInput(
           inputId = "colorGroupPCA",
           label = "Select groups to color by",
           choices = "",
@@ -93,14 +99,14 @@ tabItem(
         ),
         
         sliderInput(
-          inputId = "pcaPlotWidth",
+          inputId = "plotWidthPCA",
           label = "Width of plot",
           min = 100, max = 2000,
           value = 800, step = 10,
           ticks = FALSE
         ),
         sliderInput(
-          inputId = "pcaPlotHeight",
+          inputId = "plotHeightPCA",
           label = "Height of plot",
           min = 100, max = 2000,
           value = 600, step = 10,

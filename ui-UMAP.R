@@ -89,7 +89,12 @@ tabItem(
           label = "Display sample labels",
           value = TRUE
         ),
-        
+        selectInput(
+          inputId = "selectThemeUMAP",
+          label = "Select theme",
+          choices = c("bw", "light", "minimal", "classic"),
+          selected = "bw"
+        ),
         ### no choices, selected = "" as default
         selectInput(
           inputId = "colorGroupUMAP",
@@ -103,22 +108,21 @@ tabItem(
           choices = "",
           selected = ""
         ),
-        # selectInput(
-        #   inputId = "pickFactor1UMAP",
-        #   label = "Select Dimension for x-axis",
-        #   choices = "X1",
-        #   selected = "X1"
-        # ),
-        # selectInput(
-        #   inputId = "pickFactor2UMAP",
-        #   label = "Select Dimension for y-axis",
-        #   choices = "X2",
-        #   selected = "X2"
-        # ),
-        
-        # sliderInput("UMAPPlotWidth", "Width of plot", min = 100, max = 2000, value = 800, step = 10),
-        # sliderInput("UMAPPlotHeight", "Height of plot", min = 100, max = 2000, value = 600, step = 10),
-        
+        sliderInput(
+          inputId = "plotWidthUMAP",
+          label = "Width of plot",
+          min = 100, max = 2000,
+          value = 800, step = 10,
+          ticks = FALSE
+        ),
+        sliderInput(
+          inputId = "plotHeightUMAP",
+          label = "Height of plot",
+          min = 100, max = 2000,
+          value = 600, step = 10,
+          ticks = FALSE
+        ),
+
         fluidRow(
           column(
             numericInput(

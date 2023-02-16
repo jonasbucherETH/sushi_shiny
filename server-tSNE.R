@@ -1,5 +1,5 @@
 observe({
-  withProgress(message = "Generating t-SNE Plot. Please wait...", {
+  # withProgress(message = "Generating t-SNE Plot. Please wait...", {
     distanceMatrixTSNE <- inputDataReactive()$distanceMatrixTSNE
     groupingVariables <- inputDataReactive()$groupingVariables
     colourList <- inputDataReactive()$colourList
@@ -92,6 +92,9 @@ observe({
       ignoreInit = F, # If TRUE, then, when the eventified object is first created/initialized, don't trigger the action or (compute the value). The default is FALSE.
       ignoreNULL = F, # default = TRUE
       {
+        
+        withProgress(message = "Generating t-SNE Plot. Please wait...", {
+          
         # cat("1")
         # # # TODO: omit selected samples/groups
         # distanceMatrixTSNE <- distanceMatrixTSNE
@@ -134,11 +137,12 @@ observe({
             # input$pickFactor2TSNE
             req(input$colorGroupTSNE)
             input$shapeGroupTSNE
-            # input$TSNEPlotWidth
-            # input$TSNEPlotHeight
+            input$plotWidthTSNE
+            input$plotHeightTSNE
             input$textSizeTSNE
             input$pointSizeTSNE
             input$displayButtonTSNE
+            input$selectThemeTSNE
             
             # input$displayTitleTSNE
             input$tsneTitle
@@ -212,6 +216,8 @@ observe({
               title = input$tsneTitle
             )
 
+            themeTSNE <- paste0("theme_", input$selectThemeTSNE, "()")
+            themeTSNE <- eval(parse(text = themeTSNE))
             
             ### themes, axis labels ,legend etc
             plotTSNE <- plotTSNE + labs(
@@ -219,7 +225,7 @@ observe({
               # y = paste0(input$pickFactor2TSNE, " (", format(round(tabVarprop[input$pickFactor2TSNE] * 100, 1), nsmall = 1), "%)"),
               color = input$colorGroupTSNE, shape = input$shapeGroupTSNE
             ) +
-            theme_bw() +
+              themeTSNE +
               theme(
                 axis.text.x = element_text(
                   colour = "grey20", size = input$textSizeTSNE, angle = 0, hjust = .5,
@@ -254,9 +260,8 @@ observe({
               {
                 plotTSNE
               },
-              # width = as.numeric(input$TSNEPlotWidth),
-              # height = as.numeric(input$TSNEPlotHeight)
-              # , res = 96
+              width = as.numeric(input$plotWidthTSNE),
+              height = as.numeric(input$plotHeightTSNE)
             )
             
             output$downloadTSNE <- downloadHandler(
@@ -280,7 +285,8 @@ observe({
             # }) # close tryCatch
           }
         ) # close Event number 2
+      }) # close withProgress
       }
     ) # close Event number 1
-  }) # close withProgress
+  # }) # close withProgress
 }) # close observe

@@ -156,7 +156,12 @@ tabItem(
           label = "Display sample labels",
           value = TRUE
         ),
-        
+        selectInput(
+          inputId = "selectThemeTSNE",
+          label = "Select theme",
+          choices = c("bw", "light", "minimal", "classic"),
+          selected = "bw"
+        ),
         ### no choices, selected = "" as default
         selectInput(
           inputId = "colorGroupTSNE",
@@ -170,21 +175,20 @@ tabItem(
           choices = "",
           selected = ""
         ),
-        # selectInput(
-        #   inputId = "pickFactor1TSNE",
-        #   label = "Select Dimension for x-axis",
-        #   choices = "X1",
-        #   selected = "X1"
-        # ),
-        # selectInput(
-        #   inputId = "pickFactor2TSNE",
-        #   label = "Select Dimension for y-axis",
-        #   choices = "X2",
-        #   selected = "X2"
-        # ),
-
-        # sliderInput("TSNEPlotWidth", "Width of plot", min = 100, max = 2000, value = 800, step = 10),
-        # sliderInput("TSNEPlotHeight", "Height of plot", min = 100, max = 2000, value = 600, step = 10),
+        sliderInput(
+          inputId = "plotWidthTSNE",
+          label = "Width of plot",
+          min = 100, max = 2000,
+          value = 800, step = 10,
+          ticks = FALSE
+        ),
+        sliderInput(
+          inputId = "plotHeightTSNE",
+          label = "Height of plot",
+          min = 100, max = 2000,
+          value = 600, step = 10,
+          ticks = FALSE
+        ),
         
         fluidRow(
           column(
