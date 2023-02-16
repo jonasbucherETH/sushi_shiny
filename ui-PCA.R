@@ -37,27 +37,11 @@ tabItem(
         status = "primary",
         collapsible = TRUE,
         collapsed = FALSE,
-        fluidRow(
-          column(
-            width = 9,
-            textInput(
-              inputId = "pcaTitle",
-              label = "Title of PCA plot",
-              value = ""
-            )
-          ),
-          column(
-            width = 3,
-            br(),
-            checkboxInput(
-              inputId = "displayTitlePCA",
-              label = "Display Title",
-              # label = "",
-              value = FALSE
-            )
-          )
+        textInput(
+          inputId = "pcaTitle",
+          label = "Title of plot",
+          value = ""
         ),
-        
         checkboxInput(
           inputId = "sampleLabelsPCA",
           label = "Display sample labels",
@@ -154,10 +138,10 @@ tabItem(
         actionBttn(
           inputId = "displayButtonPCA",
           label = "Apply chosen colours",
-          icon = icon("text-size"),
+          # icon = icon("text-size"),
           style = "simple",
           color = "primary",
-          size = "md",
+          size = "sm",
           block = FALSE,
           no_outline = TRUE
         ),
@@ -166,7 +150,7 @@ tabItem(
         
         #### ----------------------------
         selectizeInput(
-          inputId = "select",
+          inputId = "selectizePCA",
           label = "Select:",
           choices = "",
           selected = "",
@@ -270,7 +254,7 @@ tabItem(
         actionBttn(
           inputId = "removeSamplesPCA",
           label = "Redo PCA",
-          icon = icon("repeat"),
+          # icon = icon("repeat"),
           style = "simple",
           color = "primary",
           size = "md",

@@ -77,7 +77,7 @@ reactiveConsole(TRUE)
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(
-    title = "Dimensionality Reduction",
+    title = "PopGen",
     # tags$li(
     #   a(
     #     href = 'mailto:sequencing@fgcz.ethz.ch?subject=exploreDEG-shiny-app-feedback',

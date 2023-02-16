@@ -3,7 +3,7 @@ observe({
     distanceMatrixTSNE <- inputDataReactive()$distanceMatrixTSNE
     groupingVariables <- inputDataReactive()$groupingVariables
     colourList <- inputDataReactive()$colourList
-    # factorLevels <- inputDataReactive()$factorLevels
+    # factorlevels <- inputDataReactive()$factorlevels
     
     # print(colourList)
     # cat(distanceMatrixTSNE[1:5,1:5])
@@ -42,10 +42,10 @@ observe({
         updateSelectizeInput(
           # session = getDefaultReactiveDomain(),
           session = session,
-          inputId = "select",
+          inputId = "selectizeTSNE",
           choices = as.list(unique(groupingVariables[[input$colorGroupTSNE]])),
           selected = as.list(unique(groupingVariables[[input$colorGroupTSNE]])),
-          server = FALSE
+          server = TRUE
           # server = TRUE
         )
       }
@@ -53,22 +53,17 @@ observe({
   
     
     output$colourPanelTSNE <- renderUI({
-      lev <- sort(unique(input$select)) # sorting so that "things" are unambigious
-      # lev <- sort(unique(groupingVariables[, input$colorGroupTSNE])) # sorting so that "things" are unambigious
-      # lev <- sort(unique(groupingVariables[[input$colorGroupTSNE]])) # sorting so that "things" are unambigious
+      levTSNE <- sort(unique(input$selectizeTSNE)) # sorting so that "things" are unambigious
+      colsTSNE <- gg_fill_hue(length(levTSNE))
       
-      # lev <- groupingVariables %>%
-      #   sort(unique(.data[[colorGroupTSNE]])) # sorting so that "things" are unambigious
-      
-      cols <- gg_fill_hue(length(lev))
-      
-      # New IDs "colX1" so that it partly coincide with input$select...
-      lapply(seq_along(lev), function(i) {
-        colourInput(inputId = paste0("col", lev[i]),
-                    label = paste0("Choose colour for ", lev[i]),
-                    value = cols[i]
+      # New IDs "colX1" so that it partly coincide with input$selectizeTSNE...
+      lapply(seq_along(levTSNE), function(i) {
+        colourInput(inputId = paste0("colTSNE_", levTSNE[i]),
+                    label = paste0("Choose colour for ", levTSNE[i]),
+                    value = colsTSNE[i]
         )
       })
+      
     })
     
     # dimList <- colnames(tsneTable)[-(1:nGrouping)]
@@ -100,14 +95,14 @@ observe({
         # cat("1")
         # # # TODO: omit selected samples/groups
         # distanceMatrixTSNE <- distanceMatrixTSNE
-        # for (i in seq_along(factorLevels)){
+        # for (i in seq_along(factorlevTSNEels)){
         #   colourList[i] <- paste0(col2hex(input[[paste0("GroupColour", i)]]), "FF")
         # }
         # colours <- NULL
-        # for (i in levels(as.factor(dataset[[input$colorGroupTSNE]]))) {
+        # for (i in levTSNEels(as.factor(dataset[[input$colorGroupTSNE]]))) {
         #   colours[i] <- colourList[i]
         # }
-        # colours <- colours[names(colours) %in% input$pcaGroups]
+        # colours <- colours[names(colours) %in% input$TSNEGroups]
         
         
         # ---------------------------- compute & prepare t-SNE
@@ -131,139 +126,68 @@ observe({
         ### theta:	numeric; Speed/accuracy trade-off (increase for less accuracy), set to 0.0 for exact TSNE (default: 0.5)
         
         tsneTable <- data.frame(groupingVariables, tsneResult$Y, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
-    
-    
-        # colnames(tsneTable)[(nGrouping+1):-1] <- sub("X", "", colnames(tsneTable))
-        
-        ##### end of TSNE computation/prep
-        
-        ### TODO: put colorGroupTSNE default as 2nd variable in groupingVariables / TSNETable; make it necessary to have (or extend ifelse statement further down)
-        # updateSelectInput(session = session, "colorGroupTSNE", choices = gvList, selected = gvList[2]) # try: selected = colnames(groupingVariables)[2] ([1] is sample name)
-        # updateSelectInput(session = session, "shapeGroupTSNE", choices = gvList, selected = "")
-        
-        # levels(as.factor(TSNETable[[input$shapeGroupTSNE]]))
-        
-        # # Can use character(0) to remove all choices
-        # if (is.null(x))
-        #   x <- character(0)
-        
-        # updateSelectInput(session = session, "colorGroupTSNE", choices = colnames(groupingVariables), selected = colnames(groupingVariables)[2]) # try: selected = colnames(groupingVariables)[2] ([1] is sample name)
-        # updateSelectInput(session = session, "shapeGroupTSNE", choices = gvList, selected = "-")
-        # 
-        # updateSelectInput(session = session, "pickFactor1TSNE", choices = dimList, selected = "X1")
-        # updateSelectInput(session = session, "pickFactor2TSNE", choices = dimList, selected = "X2")
-        # 
-        # updateSelectizeInput(
-        #   # session = getDefaultReactiveDomain(),
-        #   session = session,
-        #   inputId = "select",
-        #   # label = NULL,
-        #   # choices = as.list(unique(groupingVariables$.data[[input$colorGroupTSNE]])),
-        #   choices = as.list(unique(groupingVariables$Population)),
-        #   
-        #   # choices = as.list(levels(groupingVariables$.data[[input$colorGroupTSNE]])),
-        #   # choices = as.list(levels(groupingVariables$input$colorGroupTSNE)),
-        #   # selected = NULL,
-        #   # server = TRUE
-        # )
-        # 
-        # output$myPanel <- renderUI({ 
-        #   lev <- sort(unique(input$select)) # sorting so that "things" are unambigious
-        #   cols <- gg_fill_hue(length(lev))
-        #   
-        #   # New IDs "colX1" so that it partly coincide with input$select...
-        #   lapply(seq_along(lev), function(i) {
-        #     colourInput(inputId = paste0("col", lev[i]),
-        #                 label = paste0("Choose colour for ", lev[i]), 
-        #                 value = cols[i]
-        #     )        
-        #   })
-        # })
-        
-        # cat("before bindEvent 2")
-        # colourVariable <- input$colorGroupTSNE
-        
-        # groupingVariables[, input$colorGroupTSNE]
-        
-        # colourVariable <- input$colorGroupTSNE
-        # print(colourVariable)
-        # print(input$select)
         
         observeEvent(
           { # Event number 2: only need axis inputs here, for the others no need for redrawing plot (?)
             input$sampleLabelsTSNE
             # input$pickFactor1TSNE
             # input$pickFactor2TSNE
-            # input$colorGroupTSNE
+            req(input$colorGroupTSNE)
             input$shapeGroupTSNE
             # input$TSNEPlotWidth
             # input$TSNEPlotHeight
             input$textSizeTSNE
             input$pointSizeTSNE
-            # input$perplexityTSNE
-            # input$paramButtonTSNE
             input$displayButtonTSNE
-            # lapply(seq_along(sort(unique(input$select))), function(i) {
-            #   input[[paste0("col", i)]]
-            # })
-            # lapply(seq_along(colourList), function (i) {
-            #   input[[paste0("GroupColour", i)]]
-            # })
-            # input$reset
             
+            # input$displayTitleTSNE
+            input$tsneTitle
+
           },
           ignoreInit = F, # default = FALSE
           ignoreNULL = F, # default = TRUE
           {
 
-            if (length(input$select)) {
-              # print(input$select)
-              cols <- paste0("c(", paste0("input$col", sort(input$select), collapse = ", "), ")")
-              # print(cols)
-              colsPlot <- eval(parse(text = cols))
-              # print(colsPlot)
-            } else {
-              lev <- sort(unique(groupingVariables[[input$colorGroupTSNE]]))
-              colsPlot <- gg_fill_hue(length(lev))
-              # print(colsPlot)
+            # if (length(input$selectizeTSNE)) {
+            #   # print(input$selectizeTSNE)
+            #   colsTSNETSNE <- paste0("c(", paste0("input$colTSNE_", sort(input$selectizeTSNE), collapse = ", "), ")")
+            #   # print(colsTSNETSNE)
+            #   colsTSNETSNE <- eval(parse(text = colsTSNETSNE))
+            #   # print(colsTSNETSNE)
+            # } else {
+            #   levTSNE <- sort(unique(groupingVariables[[input$colorGroupTSNE]]))
+            #   colsTSNETSNE <- gg_fill_hue(length(levTSNE))
+            #   # print(colsTSNETSNE)
+            # }
+            
+            colsTSNE <- paste0("c(", paste0("input$colTSNE_", sort(input$selectizeTSNE), collapse = ", "), ")")
+            # print(colsTSNE)
+            colsTSNE <- eval(parse(text = colsTSNE))
+            # print(colsTSNE)
+            
+            if (is.null(colsTSNE)) {
+              colsTSNE <- gg_fill_hue(length(sort(unique(groupingVariables[[input$colorGroupTSNE]]))))
             }
 
             # To prevent errors
-            # req(length(colsPlot) == length(input$select))
+            # req(length(colsTSNE) == length(input$selectizeTSNE))
             
             if (input$shapeGroupTSNE == "-") {
               plotTSNE <- tsneTable %>%
                 # ggplot(aes(x = .data[[input$pickFactor1TSNE]], y = .data[[input$pickFactor2TSNE]], color = .data[[input$colorGroupTSNE]], fill = .data[[input$colorGroupTSNE]])) +
                 ggplot(aes(x = .data[["X1"]], y = .data[["X2"]], color = .data[[input$colorGroupTSNE]], fill = .data[[input$colorGroupTSNE]])) +
                 geom_point(size = as.numeric(input$pointSizeTSNE)) +
-                scale_color_manual(values = colsPlot)
+                scale_color_manual(values = colsTSNE)
                 # geom_point(size = as.numeric(input$pointSizeTSNE))
             } else {
               plotTSNE <- tsneTable %>%
                 # ggplot(aes(x = .data[[input$pickFactor1TSNE]], y = .data[[input$pickFactor2TSNE]], color = .data[[input$colorGroupTSNE]], fill = .data[[input$colorGroupTSNE]], shape = .data[[input$shapeGroupTSNE]])) +
                 ggplot(aes(x = .data[["X1"]], y = .data[["X2"]], color = .data[[input$colorGroupTSNE]], fill = .data[[input$colorGroupTSNE]], shape = .data[[input$shapeGroupTSNE]])) +
                 geom_point(size = as.numeric(input$pointSizeTSNE)) +
-                scale_color_manual(values = colsPlot) +
+                scale_color_manual(values = colsTSNE) +
                 scale_shape_manual(values = c(rep(c(21, 22, 23, 24, 25, 8, 3, 4), times = 10))[1:nlevels(as.factor(tsneTable[[input$shapeGroupTSNE]]))])
               ### Note: 21-25 are simple shapes, but with filling; 8,3,4 are crosses with different amount of lines
             }
-            
-            # if (input$shapeGroupTSNE == "Population") {
-            #   cat("if statement works")
-            #   plotTSNE <- TSNETable %>%
-            #     ggplot(aes(x = .data[[input$pickFactor1TSNE]], y = .data[[input$pickFactor2TSNE]], color = .data[[input$colorGroupTSNE]], fill = .data[[input$colorGroupTSNE]], shape = .data[[input$shapeGroupTSNE]])) +
-            #     geom_point()
-            # } else {
-            #   plotTSNE <- TSNETable %>%
-            #     ggplot(aes(x = .data[[input$pickFactor1TSNE]], y = .data[[input$pickFactor2TSNE]], color = .data[[input$colorGroupTSNE]], fill = .data[[input$colorGroupTSNE]])) +
-            #     geom_point()
-            #   # scale_shape_manual(values = c(rep(c(21,22,23,24,25,8,3,4), times = 10 ))[1:nlevels(as.factor(datasetTSNE[[input$TSNEFactor2]]))] )
-            #   ### Note: 21-25 are simple shapes, but with filling; 8,3,4 are crosses with different amount of lines
-            # }
-            # plotTSNE <- TSNETable %>%
-            #   ggplot(aes(x = .data[[input$pickFactor1TSNE]], y = .data[[input$pickFactor2TSNE]], color = .data[[input$colorGroupTSNE]])) +
-            #   geom_point()
-            # scale_color_manual(values = colours)
 
             if (input$sampleLabelsTSNE) {
               plotTSNE <- plotTSNE +
@@ -277,11 +201,17 @@ observe({
               # xlim(c(min(TSNETable[[input$pickFactor1TSNE]]*1.1), max(TSNETable[[input$pickFactor1TSNE]]*1.2)))
             }
             
-            if (input$displayTitleTSNE) {
-              plotTSNE <- plotTSNE + labs(
-                title = input$tsneTitle
-              )
-            } 
+            # if (input$displayTitleTSNE) {
+            #   plotTSNE <- plotTSNE + labs(
+            #     title = input$tsneTitle
+            #   )
+            # }
+            
+
+            plotTSNE <- plotTSNE + labs(
+              title = input$tsneTitle
+            )
+
             
             ### themes, axis labels ,legend etc
             plotTSNE <- plotTSNE + labs(
@@ -289,17 +219,6 @@ observe({
               # y = paste0(input$pickFactor2TSNE, " (", format(round(tabVarprop[input$pickFactor2TSNE] * 100, 1), nsmall = 1), "%)"),
               color = input$colorGroupTSNE, shape = input$shapeGroupTSNE
             ) +
-              # scale_color_manual(
-              #   breaks = input$colorGroupTSNE,
-              #   # breaks = tsneTable[[input$colorGroupTSNE]],
-              #   values = cols
-              # )  +
-              # scale_fill_manual(
-              #   # breaks = tsneTable[[input$colorGroupTSNE]],
-              #   breaks = input$colorGroupTSNE,
-              #   
-              #   values = cols
-              # )  +
             theme_bw() +
               theme(
                 axis.text.x = element_text(
@@ -347,8 +266,8 @@ observe({
               content = function(file) {
                 ggsave(
                   filename = file, plot = plotTSNE # ,
-                  # width = (as.numeric(input$figWidthPCA) / 3.2),
-                  # height = (as.numeric(input$figHeightPCA) / 3.2), limitsize = FALSE,
+                  # width = (as.numeric(input$figWidthTSNE) / 3.2),
+                  # height = (as.numeric(input$figHeightTSNE) / 3.2), limitsize = FALSE,
                   # units = "mm"
                 )
               }

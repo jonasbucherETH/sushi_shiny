@@ -29,7 +29,7 @@ tabItem(
         
         br(), br(),
         actionBttn(
-          inputId = "paramButtonTSNE",
+          inputId = "paramButtonUMAP",
           label = "Apply parameters",
           # icon = icon("check"),
           style = "simple",
@@ -39,13 +39,13 @@ tabItem(
           no_outline = TRUE
         ),
 
-        selectInput(
-          inputId = "excludeSamplesUMAP",
-          label = "Select samples to exclude",
-          choices = "",
-          selected = ""
-        
-        ),
+        # selectInput(
+        #   inputId = "excludeSamplesUMAP",
+        #   label = "Select samples to exclude",
+        #   choices = "",
+        #   selected = ""
+        # 
+        # ),
       ) # close box 
     ), # close  column
     
@@ -79,21 +79,15 @@ tabItem(
         status = "primary",
         collapsible = TRUE,
         collapsed = FALSE,
-        checkboxInput(
-          inputId = "displayTitleUMAP",
-          label = "Display Title",
-          value = FALSE
-        ),
         textInput(
-          inputId = "UMAPTitle",
-          label = "Title of UMAP plot",
+          inputId = "umapTitle",
+          label = "Title of plot",
           value = ""
         ),
-        
         checkboxInput(
           inputId = "sampleLabelsUMAP",
           label = "Display sample labels",
-          value = FALSE
+          value = TRUE
         ),
         
         ### no choices, selected = "" as default
@@ -125,20 +119,66 @@ tabItem(
         # sliderInput("UMAPPlotWidth", "Width of plot", min = 100, max = 2000, value = 800, step = 10),
         # sliderInput("UMAPPlotHeight", "Height of plot", min = 100, max = 2000, value = 600, step = 10),
         
-        numericInput(
-          inputId = "pointSizeUMAP",
-          label = "Sizes of points in UMAP plot", min = 1, max = 6,
-          value = 3, step = 0.5
-        ),
-        numericInput(
-          inputId = "textSizeUMAP",
-          label = "Figure Font Size", min = 4, max = 30,
-          value = 12, step = 0.5
+        fluidRow(
+          column(
+            numericInput(
+              inputId = "pointSizeUMAP",
+              label = "Point size", min = 1, max = 6,
+              value = 3, step = 0.5,
+              # width = "100px"
+            ),
+            width = 6
+          ),
+          column(
+            numericInput(
+              inputId = "textSizeUMAP",
+              label = "Font Size", min = 4, max = 30,
+              value = 12, step = 0.5,
+              # width = "100px"
+            ),
+            width = 6
+          )
         ),
         
-      ) # close box
-    ), # close column
+      ), # close box
+    # ), # close column
     
-    
+      box(
+        title = "Custom colours",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        actionBttn(
+          inputId = "displayButtonUMAP",
+          label = "Apply chosen colours",
+          icon = icon("text-size"),
+          style = "simple",
+          color = "primary",
+          size = "sm",
+          block = FALSE,
+          no_outline = TRUE
+        ),
+        br(), br(),
+        # actionButton("reset", "Default colours", icon = icon("undo"))
+        
+        #### ----------------------------
+        selectizeInput(
+          inputId = "selectizeUMAP",
+          label = "Select:",
+          choices = "",
+          selected = "",
+          multiple = TRUE
+        ),
+        
+        # selectizeInput("select", "Select:", 
+        #                choices = as.list(unique(groupingVariables$Population)), 
+        #                # selected = "X1", 
+        #                multiple = TRUE),
+        
+        uiOutput('colourPanelUMAP'),
+      )
+    )
   ) # close fluidRow
 ) # close tabItem

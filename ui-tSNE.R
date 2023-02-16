@@ -124,27 +124,33 @@ tabItem(
         
         #### ---------------------------
         
-        fluidRow(
-          column(
-            width = 9,
-            textInput(
-              inputId = "tsneTitle",
-              label = "Title of plot",
-              value = ""
-            )
-          ),
-          column(
-            width = 3,
-            br(),
-            checkboxInput(
-              inputId = "displayTitleTSNE",
-              label = "Display Title",
-              # label = "",
-              value = FALSE
-            )
-          )
-        ),
+        # fluidRow(
+        #   column(
+        #     width = 9,
+        #     textInput(
+        #       inputId = "tsneTitle",
+        #       label = "Title of plot",
+        #       value = ""
+        #     )
+        #   ),
+        #   column(
+        #     width = 3,
+        #     br(),
+        #     checkboxInput(
+        #       inputId = "displayTitleTSNE",
+        #       label = "Display Title",
+        #       # label = "",
+        #       value = TRUE
+        #     )
+        #   )
+        # ),
         
+        textInput(
+          inputId = "tsneTitle",
+          label = "Title of plot",
+          value = ""
+        ),
+
         checkboxInput(
           inputId = "sampleLabelsTSNE",
           label = "Display sample labels",
@@ -180,15 +186,25 @@ tabItem(
         # sliderInput("TSNEPlotWidth", "Width of plot", min = 100, max = 2000, value = 800, step = 10),
         # sliderInput("TSNEPlotHeight", "Height of plot", min = 100, max = 2000, value = 600, step = 10),
         
-        numericInput(
-          inputId = "pointSizeTSNE",
-          label = "Sizes of points in TSNE plot", min = 1, max = 6,
-          value = 3, step = 0.5
-        ),
-        numericInput(
-          inputId = "textSizeTSNE",
-          label = "Figure Font Size", min = 4, max = 30,
-          value = 12, step = 0.5
+        fluidRow(
+          column(
+            numericInput(
+              inputId = "pointSizeTSNE",
+              label = "Point size", min = 1, max = 6,
+              value = 3, step = 0.5,
+              # width = "100px"
+            ),
+            width = 6
+          ),
+          column(
+            numericInput(
+              inputId = "textSizeTSNE",
+              label = "Font Size", min = 4, max = 30,
+              value = 12, step = 0.5,
+              # width = "100px"
+            ),
+            width = 6
+          )
         ),
 
       ), # close box
@@ -212,7 +228,7 @@ tabItem(
           icon = icon("text-size"),
           style = "simple",
           color = "primary",
-          size = "md",
+          size = "sm",
           block = FALSE,
           no_outline = TRUE
         ),
@@ -221,7 +237,7 @@ tabItem(
         
         #### ----------------------------
         selectizeInput(
-          inputId = "select",
+          inputId = "selectizeTSNE",
           label = "Select:",
           choices = "",
           selected = "",
@@ -237,5 +253,4 @@ tabItem(
       )
     )
   )
-  
 ) # close tabItem
