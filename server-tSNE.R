@@ -2,7 +2,6 @@ observe({
   # withProgress(message = "Generating t-SNE Plot. Please wait...", {
     distanceMatrixTSNE <- inputDataReactive()$distanceMatrixTSNE
     groupingVariables <- inputDataReactive()$groupingVariables
-    colourList <- inputDataReactive()$colourList
     # factorlevels <- inputDataReactive()$factorlevels
     
     # print(colourList)
@@ -78,7 +77,7 @@ observe({
     observeEvent( # Event number 1
       {
         input$paramButtonTSNE
-        input$removeSamplesTSNE
+        # input$removeSamplesTSNE
         # input$perplexityTSNE
         # input$max_iterTSNE
         # input$thetaTSNE

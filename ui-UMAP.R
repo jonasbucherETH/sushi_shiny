@@ -9,9 +9,6 @@ tabItem(
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
-        # inputs
-        
-        
         numericInput(
           inputId = "n_neighborsUMAP",
           label = "The size of local neighborhood 
@@ -19,14 +16,25 @@ tabItem(
           min = 2, max = 100,
           value = 15, step = 1
         ),
-        
+        tags$b("Method for finding nearest neighbors"),
+        selectInput(
+          inputId = "nnMethodUMAP",
+          label = "By default, for n < 4'096 the exact nearest neighbors are found",
+          choices = c("exact (fnn)", "approximate (annoy)"),
+          selected = "exact"
+        ),
+        tags$b("Type of distance metric to use to find nearest neighbors"),
         selectInput(
           inputId = "distanceMetricUMAP",
-          label = "Type of distance metric to use to find nearest neighbors",
+          label = "With the exact method (fnn), only euclidean is compatible",
           choices = c("euclidean","cosine","manhattan",
                       "hamming","correlation","categorical")
         ),
-        
+        checkboxInput(
+          inputId = "scaleUMAP",
+          label = "Scale the data before running UMAP?",
+          value = FALSE
+        ),
         br(), br(),
         actionBttn(
           inputId = "paramButtonUMAP",
@@ -52,7 +60,7 @@ tabItem(
     column(
       width = 7,
       box(
-        title = "UMAP Plots",
+        title = "Uniform Manifold Approximation and Projection",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
@@ -157,7 +165,7 @@ tabItem(
         actionBttn(
           inputId = "displayButtonUMAP",
           label = "Apply chosen colours",
-          icon = icon("text-size"),
+          # icon = icon("text-size"),
           style = "simple",
           color = "primary",
           size = "sm",

@@ -49,6 +49,40 @@ observe({
       })
       
     })
+    
+    if (nrow(datasetUMAP)>4095) {
+      updateSelectInput(session = session, inputId = "nnMethodUMAP", choices = c("exact (fnn)", "approximate (annoy)"), selected = "approximate (annoy)")
+    }
+    
+    observeEvent( # Event number 0.5
+      {
+        input$nnMethodUMAP
+      },
+      ignoreInit = F, # If TRUE, then, when the eventified object is first created/initialized, don't trigger the action or (compute the value). The default is FALSE.
+      ignoreNULL = F, # default = TRUE
+      {
+        if (input$nnMethodUMAP=="exact (fnn)") {
+          updateSelectInput(session = session, inputId = "distanceMetricUMAP",
+                            choices = c("euclidean"), selected = "euclidean")
+        } else {
+          updateSelectInput(session = session, inputId = "distanceMetricUMAP",
+                            choices = c("euclidean","cosine","manhattan",
+                                        "hamming","correlation","categorical"),
+                            selected = "euclidean")
+
+        }
+      }
+    ) # close Event number 0
+    
+    # if (input$nnMethodUMAP=="exact (fnn)") {
+    #   nnMethodChoice <- "fnn"
+    # } else {
+    #   nnMethodChoice <- "annoy"
+    # }
+    
+    # if (nnMethodChoice=="fnn") {
+    #   updateSelectInput(session = session, inputId = "distanceMetricUMAP", choices = c("euclidean"), selected = "euclidean")
+    # }
 
     observeEvent( # Event number 1
       {
@@ -70,11 +104,24 @@ observe({
       ignoreNULL = F, # default = TRUE
       {
         
+        # colsUMAP <- eval(parse(text = colsUMAP))
+        if (input$nnMethodUMAP=="exact (fnn)") {
+          nnMethodChoice <- "fnn"
+        } else {
+          nnMethodChoice <- "annoy"
+        }
+        
+        # if (nnMethodChoice=="fnn") {
+        #   updateSelectInput(session = session, inputId = "distanceMetricUMAP", choices = c("euclidean"), selected = "euclidean")
+        # }
+        
         umapResult <- umap(
           X = datasetUMAP,
-          n_neighbors = input$n_neighborsUMAP,
+          n_neighbors = input$n_neighborsUMAP, # for nn_method = "fnn", the distance metric is always "euclidean")
+          nn_method = nnMethodChoice, # By default, if X has less than 4,096 vertices, the exact nearest neighbors are found
           n_components = 2,
-          metric = input$distanceMetricUMAP
+          metric = input$distanceMetricUMAP,
+          scale = input$scaleUMAP, # TRUE: Scale each column to zero mean and variance 1
         ) # returns matrix
         
         UMAPTable <- data.frame(groupingVariables, umapResult, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))

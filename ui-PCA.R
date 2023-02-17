@@ -4,7 +4,7 @@ tabItem(
     column(
       width = 9, # 3 + 9 = 12 to fill row
       box(
-        title = "PCA Plots",
+        title = "PCA Plot",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
@@ -66,7 +66,8 @@ tabItem(
           choices = "",
           selected = ""
         ),
-        tags$b("Select PCs"),
+        tags$b("Select Principal components"),
+        
 
         fluidRow(
           column(
@@ -93,10 +94,40 @@ tabItem(
         br(),
         checkboxInput(
           inputId = "pcaAxesProp",
-          label = "Keep axes proportional",
+          label = "Keep axes proportional to variance",
           # label = "",
           value = TRUE
         ),
+        
+        # fluidRow(
+        #   tags$head(
+        #     tags$style(type="text/css","label{ display: table-cell; text-align: center;vertical-align: middle; } .form-group { display: table-row;}")
+        #   ),
+        #   column(5,style='background-color:#f2f2f2;min-width: 300px;',
+        #          # h4("Label Issue"),
+        #          # br(),
+        #          tags$table(
+        #            tags$tr(width = "100%",
+        #                    tags$td(width = "60%", div(style = "font-size:10px;", "Width of plot")),
+        #                    tags$td(width = "40%", sliderInput(
+        #                      inputId = "plotWidthPCA",
+        #                      label = NULL,
+        #                      min = 100, max = 2000,
+        #                      value = 800, step = 10,
+        #                      ticks = FALSE
+        #                    ))),
+        #            tags$tr(width = "100%",
+        #                    tags$td(width = "60%", tags$div(style = "font-size:10pX;", "Height of plot")),
+        #                    tags$td(width = "40%", sliderInput(
+        #                      inputId = "plotHeightPCA",
+        #                      label = NULL,
+        #                      min = 100, max = 2000,
+        #                      value = 600, step = 10,
+        #                      ticks = FALSE
+        #                    )))
+        #          )
+        #   )
+        # ),
         
         sliderInput(
           inputId = "plotWidthPCA",
@@ -112,7 +143,7 @@ tabItem(
           value = 600, step = 10,
           ticks = FALSE
         ),
-        
+
         fluidRow(
           column(
             numericInput(

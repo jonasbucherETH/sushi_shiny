@@ -110,17 +110,27 @@ ui <- dashboardPage(
       menuItem(
         text = "PCA",
         tabName = "tab-PCA",
-        icon = icon("meteor")
+        icon = icon("ranking-star")
       ),
       menuItem(
         text = "t-SNE",
-        tabName = "tab-tSNE",
-        icon = icon("table")
+        tabName = "tab-TSNE",
+        icon = icon("square-share-nodes")
+        # square-poll-vertical
+        # icon = icon("table")
       ),
       menuItem(
         text = "UMAP",
         tabName = "tab-UMAP",
-        icon = icon("wifi")
+        icon = icon("network-wired")
+      ),
+      menuItem(
+        text = "MDS",
+        tabName = "tab-MDS",
+        icon = icon("cube")
+        # icon = icon("cubes")
+        # icon = icon("codepen")
+        # icon = icon("border-none")
       )
     )
   ),
@@ -132,8 +142,9 @@ ui <- dashboardPage(
     tabItems(
       source("ui-PCA.R", local = TRUE)$value,
       source("ui-tSNE.R", local = TRUE)$value,
-      source("ui-UMAP.R", local = TRUE)$value
-      
+      source("ui-UMAP.R", local = TRUE)$value,
+      source("ui-MDS.R", local = TRUE)$value
+
       # source("~/git/ezRun/R/PCAMDS_shiny/ui-PCA.R", local = F)$value
     )
   )
@@ -151,6 +162,8 @@ server <- function(input, output, session) {
   source("server-PCA.R", local = TRUE)
   source("server-tSNE.R", local = TRUE)
   source("server-UMAP.R", local = TRUE)
+  source("server-MDS.R", local = TRUE)
+  
   
   
 }

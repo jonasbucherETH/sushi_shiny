@@ -1,11 +1,11 @@
 tabItem(
-  tabName = "tab-TSNE",
+  tabName = "tab-MDS",
   fluidRow( ### NOTE: 1 row has width = 12
     
     column(
       width = 2, 
       box(
-        title = "t-SNE Parameters",
+        title = "MDS Parameters",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
@@ -16,39 +16,13 @@ tabItem(
         #   icon = NULL
         # ),
         # checkboxInput(
-        #   inputId = "normalizeTSNE",
+        #   inputId = "normalizeMDS",
         #   label = "Normalize distance matrix (recommended for Euclidean distances)",
         #   value = TRUE
         # ),
-        numericInput(
-          inputId = "perplexityTSNE",
-          label = "Perplexity parameter",
-          min = 5, max = 5,
-          value = 5, step = 5
-        ),
-        numericInput(
-          inputId = "max_iterTSNE",
-          label = "Maximum number of iterations",
-          min = 500, max = 3000,
-          value = 1000, step = 500
-        ),        
-        numericInput(
-          inputId = "thetaTSNE",
-          label = HTML("&theta;: Speed/accuracy trade-off.
-                       Set to 0.0 for exact TSNE"),
-          # label = HTML("&eta;:"),
-          min = 0, max = 1,
-          value = 0.5, step = 0.1
-        ),        
-        numericInput(
-          inputId = "etaTSNE",
-          label = HTML("&eta;: learning rate"),
-          min = 50, max = 800,
-          value = 200, step = 50
-        ),
         br(), br(),
         actionBttn(
-          inputId = "paramButtonTSNE",
+          inputId = "paramButtonMDS",
           label = "Apply parameters",
           # icon = icon("check"),
           style = "simple",
@@ -58,7 +32,7 @@ tabItem(
           no_outline = TRUE
         ),
         # selectInput(
-        #   inputId = "removeSamplesTSNE",
+        #   inputId = "removeSamplesMDS",
         #   label = "Select samples to exclude",
         #   choices = "",
         #   selected = ""
@@ -70,17 +44,17 @@ tabItem(
     column(
       width = 7,
       box(
-        title = "t-SNE Plot",
+        title = "Multidimensional scaling",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
         downloadButton(
-          outputId = "downloadTSNE",
-          label = "Download t-SNE Plot (PDF)"
+          outputId = "downloadMDS",
+          label = "Download MDS Plot (PDF)"
         ),
         br(), br(),
         plotOutput(
-          outputId = "tsneStatic",
+          outputId = "MDSStatic",
           height = "80vh",
           width = "100%",
           inline = F
@@ -99,44 +73,44 @@ tabItem(
         collapsed = FALSE,
         
         textInput(
-          inputId = "tsneTitle",
+          inputId = "MDSTitle",
           label = "Title of plot",
           value = ""
         ),
-
+        
         checkboxInput(
-          inputId = "sampleLabelsTSNE",
+          inputId = "sampleLabelsMDS",
           label = "Display sample labels",
           value = TRUE
         ),
         selectInput(
-          inputId = "selectThemeTSNE",
+          inputId = "selectThemeMDS",
           label = "Select theme",
           choices = c("bw", "light", "minimal", "classic"),
           selected = "bw"
         ),
         ### no choices, selected = "" as default
         selectInput(
-          inputId = "colorGroupTSNE",
+          inputId = "colorGroupMDS",
           label = "Select groups to color by",
           choices = "",
           selected = ""
         ),
         selectInput(
-          inputId = "shapeGroupTSNE",
+          inputId = "shapeGroupMDS",
           label = "Select groups for shapes",
           choices = "",
           selected = ""
         ),
         sliderInput(
-          inputId = "plotWidthTSNE",
+          inputId = "plotWidthMDS",
           label = "Width of plot",
           min = 100, max = 2000,
           value = 800, step = 10,
           ticks = FALSE
         ),
         sliderInput(
-          inputId = "plotHeightTSNE",
+          inputId = "plotHeightMDS",
           label = "Height of plot",
           min = 100, max = 2000,
           value = 600, step = 10,
@@ -146,7 +120,7 @@ tabItem(
         fluidRow(
           column(
             numericInput(
-              inputId = "pointSizeTSNE",
+              inputId = "pointSizeMDS",
               label = "Point size", min = 1, max = 6,
               value = 3, step = 0.5,
               # width = "100px"
@@ -155,7 +129,7 @@ tabItem(
           ),
           column(
             numericInput(
-              inputId = "textSizeTSNE",
+              inputId = "textSizeMDS",
               label = "Font Size", min = 4, max = 30,
               value = 12, step = 0.5,
               # width = "100px"
@@ -163,15 +137,15 @@ tabItem(
             width = 6
           )
         ),
-
+        
       ), # close box
       
-    # ), # close column
-    
-  # ), # close fluidRow 1
-  # fluidRow(
-  
-
+      # ), # close column
+      
+      # ), # close fluidRow 1
+      # fluidRow(
+      
+      
       box(
         title = "Custom colours",
         width = NULL,
@@ -180,7 +154,7 @@ tabItem(
         collapsible = TRUE,
         collapsed = TRUE,
         actionBttn(
-          inputId = "displayButtonTSNE",
+          inputId = "displayButtonMDS",
           label = "Apply chosen colours",
           # icon = icon("text-size"),
           style = "simple",
@@ -194,7 +168,7 @@ tabItem(
         
         #### ----------------------------
         selectizeInput(
-          inputId = "selectizeTSNE",
+          inputId = "selectizeMDS",
           label = "Select:",
           choices = "",
           selected = "",
@@ -206,7 +180,7 @@ tabItem(
         #                # selected = "X1", 
         #                multiple = TRUE),
         
-        uiOutput('colourPanelTSNE'),
+        uiOutput('colourPanelMDS'),
       )
     )
   )

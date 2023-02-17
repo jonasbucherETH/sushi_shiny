@@ -1,8 +1,55 @@
 inputDataReactive <- reactive({
 # inputDataReactive <- {
+  # waiter <- waiter::Waiter$new()
+  # waiter$show()
+  # on.exit(waiter$hide())
+  # 
+  # # Start from here:
+  # queryList = parseQueryString(session$clientData$url_search)
+  # if (is.list(queryList)){
+  #   dataUrl <- queryList$data
+  # } else {
+  #   dataUrl <- NULL
+  # }
+  # urlDataRoot = c("/srv/gstore/projects", "/srv/GT/analysis/course_sushi/public/gstore/projects")
+  # 
+  # if (!is.null(dataUrl)) {
+  #   dataDir <- file.path(urlDataRoot, dataUrl)
+  #   dataDir <- dataDir[file.exists(dataDir)][1]
+  #   if (!file.exists(dataDir)){
+  #     # ezMail(paste("invalid dataDir: ", dataDir), subject="PopGen_Structure failed", to="gxtx_data_mngt@fgcz.ethz.ch")
+  #     stop(paste("invalid dataDir", dataDir))
+  #   }
+  # } else {
+  #   # dataDir <- "/srv/gstore/projects/p23793/o23960_EdgeR_RIVA-Ibru-6h--over--RIVA-DMSO_2022-09-02--16-54-00/RIVA-Ibru-6h--over--RIVA-DMSO"
+  #   # put path to test dataset
+  #   dataDir <- "/srv/gstore/projects/"
+  # 
+  # 
+  #   # dataDir <- "/srv/gstore/projects/p24934/o27003_DESeq2_HP20--over--CTRLi_HP_2022-03-29--16-13-05/HP20--over--CTRLi_HP"
+  #   # dataDir <- "/srv/gstore/projects/p23793/o29198_DESeq2_WT_antrum_Hp--over--WT_antrum_control_2022-09-29--12-37-08/WT_antrum_Hp--over--WT_antrum_control"
+  #   # dataDir <- "/srv/gstore/projects/p3572/o29366_DESeq2_Huh7--over--JHH-5_2022-10-20--10-49-09/Huh7--over--JHH-5"
+  #   # showModal(
+  #   #   modalDialog(
+  #   #     title = "No dataset link provided",
+  #   #     paste0("There is no dataset link provided. Please add the path to your dataset to the URL."),
+  #   #     easyClose = TRUE,
+  #   #     footer = NULL
+  #   #   )
+  #   # )
+  #   # stop()
+  # }
+  # rdsFilePath <- file.path(dataDir, "deResult.rds")
+  # oraHTML <- file.path(dataDir, list.files(dataDir)[grep("ORA_results.xlsx", list.files(dataDir))])
+  # gseaHTML <- file.path(dataDir, list.files(dataDir)[grep("GSEA_results.xlsx", list.files(dataDir))])
+  # degHTML <- file.path(dataDir, list.files(dataDir)[grep("xlsx", list.files(dataDir))]) %>% .[!grepl("ORA|GSEA", .)]
+  # if (file.exists(file.path(dirname(dataDir), "input_dataset.tsv"))) {
+  #   inputData <- read_tsv(file.path(dirname(dataDir), "input_dataset.tsv"))
+  #   colnames(inputData) <- gsub(" \\[.*", "", colnames(inputData))
+  # }
   
-
-  # Load data ---------------------------
+  ### ------------- Load data for SUSHI -----------------------------------
+  
   # pca <- readRDS("PCA.rds")
   # groupingVariables <- readRDS("grouping_vars.rds")
   # vcfRaw <- read.vcfR("vcf.rds")
@@ -13,14 +60,7 @@ inputDataReactive <- reactive({
   # 
   # distanceMatrixTSNE <- read_tsv("plink.dist", col_names = F)
   
-  ### for testing
-  # vcfA <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/A_Eall.vcf.gz")
-  # vcfB <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/B_Eall.vcf.gz")
-  # vcfA_corrected <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/A_Eall.pruned.phased.sample_name_corrected.landraces.vcf.gz")
-  # vcfB_corrected <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/B_Eall.pruned.phased.sample_name_corrected.landraces.vcf.gz")
-  # dataset <- vcfR2genind(vcfA_corrected)
-  # pop(dataset) <- c(groupingVariables[,2])
-  
+  ### ------------- Load data for testing -----------------------------------
   # colnames(vcfRaw@gt)
   
   ## PCA
@@ -31,77 +71,30 @@ inputDataReactive <- reactive({
   dataset <- genind2df(vcfGenind)
   
   groupingVariables <- read.delim("data/populations.txt") # read.table or read.delim (used before) -> delim should be fine
-  # groupingVariables <- groupingVariables[1:41,]
   rownames(groupingVariables) <- groupingVariables[,1]
   factors <- colnames(groupingVariables)
   groupingVariables[42, 2] <- "DipPop"
 
-  # # get sample IDs from vcf
-  # sampleIDs <- colnames(vcfRaw@gt)[-1]
-  # 
   datasetScaled <- scaleGen(
     vcfGenind,
     center = FALSE,
     scale = FALSE,
     NA.method="mean"
   )
-  # datasetScaled <- datasetScaled[1:41,]
-  # 
-  # 
-  # ## MDS
-  mds <- read.csv("data/plink_3101.mds", sep="")
-  # 
+
+  mdsResults <- read.csv("data/plink_3101.mds", sep="")
+
   # ## t-SNE
   distanceMatrixTSNE <- read_tsv("data/plink_3101.dist", col_names = F)
   
   ## UMAP
   
-  
-  # cat(class(distanceMatrixTSNE))
-
-
-  # pca <- dudi.pca(X, center = TRUE, scale = TRUE, scan = FALSE)
-  # #
-  # # mds <- read.csv("~/git/ezRun/output_data/plink_mds.mds", sep="")
-  # #
-  # # ### load data
-  # # # pca <- readRDS("PCA.rds")
-  # # # grouping_vars <- readRDS("grouping_vars.rds")
-  # # # mds <- read.csv("plink.mds", sep="")
-  # #
-  # #
-  # # ### both testing & normal setup
-  # n_pcs <- pca$nf # number of (> 0) principal components
-  # n_grouping <- ncol(grouping_vars)
-  # 
-  # eig_sum <- sum(pca$eig)
-  # pca_varprop <- pca$eig/eig_sum
-  # pca_varprop <- pca_varprop[1:n_pcs]
-  # 
-  # pca_tab <- data.frame(grouping_vars, pca$li, stringsAsFactors = FALSE, row.names = NULL)
-  # 
-  # tab_varprop <- as.data.frame(t(pca_varprop), stringsAsFactors = FALSE)
-  # PC_indeces <- seq(1+n_grouping, ncol(pca_tab))
-  # 
-  # for (i in 1:n_pcs){
-  #   colnames(pca_tab)[i+n_grouping] <- paste0("PC", i)
-  #   colnames(tab_varprop)[i] <- paste0("PC", i)
-  # }
-  # 
-  # # all PCs in array for selecting input
-  # pc_list <- colnames(pca_tab)[-(1:n_grouping)]
-  
-  
-  # 
-  # n_dim <- ncol(mds)-ncol(grouping_vars)-1   # number of dimensions kept in mds
-  # mds_tab <- data.frame(grouping_vars, mds[, (ncol(grouping_vars)+2):ncol(mds)], stringsAsFactors = FALSE, row.names = NULL)
-  
-  # n_pcs = "please print this"
-  # print(n_pcs)
-  
-  
-  # If there's only one factor, duplicate it so everything that expects a 
-  # second factor doesn't break: 
+  # vcfA <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/A_Eall.vcf.gz")
+  # vcfB <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/B_Eall.vcf.gz")
+  # vcfA_corrected <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/A_Eall.pruned.phased.sample_name_corrected.landraces.vcf.gz")
+  # vcfB_corrected <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/B_Eall.pruned.phased.sample_name_corrected.landraces.vcf.gz")
+  # dataset <- vcfR2genind(vcfA_corrected)
+  # pop(dataset) <- c(groupingVariables[,2])
   
   # factorLevels <- NULL
   # for (i in seq_along(datasetScaled[factors])){
@@ -136,7 +129,8 @@ inputDataReactive <- reactive({
     "dataset" = dataset,
     "datasetScaled" = datasetScaled,
     "groupingVariables" = groupingVariables,
-    "distanceMatrixTSNE" = distanceMatrixTSNE
+    "distanceMatrixTSNE" = distanceMatrixTSNE,
+    "mdsResults" = mdsResults
     # "colourList" = colourList
     # "factorLevels" = factorLevels
     # "mds" = mds,
