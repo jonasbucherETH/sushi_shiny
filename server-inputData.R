@@ -1,60 +1,60 @@
 inputDataReactive <- reactive({
-  # waiter <- waiter::Waiter$new()
-  # waiter$show()
-  # on.exit(waiter$hide())
-  # 
-  # # Start from here:
-  # queryList = parseQueryString(session$clientData$url_search)
-  # if (is.list(queryList)){
-  #   dataUrl <- queryList$data
-  # } else {
-  #   dataUrl <- NULL
-  # }
-  # urlDataRoot = c("/srv/gstore/projects", "/srv/GT/analysis/course_sushi/public/gstore/projects")
-  # 
-  # if (!is.null(dataUrl)) {
-  #   dataDir <- file.path(urlDataRoot, dataUrl)
-  #   dataDir <- dataDir[file.exists(dataDir)][1]
-  #   if (!file.exists(dataDir)){
-  #     # ezMail(paste("invalid dataDir: ", dataDir), subject="PopGen_Structure failed", to="gxtx_data_mngt@fgcz.ethz.ch")
-  #     stop(paste("invalid dataDir", dataDir))
-  #   }
-  # } else {
-  #   # dataDir <- "/srv/gstore/projects/p23793/o23960_EdgeR_RIVA-Ibru-6h--over--RIVA-DMSO_2022-09-02--16-54-00/RIVA-Ibru-6h--over--RIVA-DMSO"
-  #   # put path to test dataset
-  #   dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test1_2023-02-20--10-57-27/shiny_test1"
-  # }
-  # 
-  # resultsDir <- file.path(urlDataRoot, "/srv/gstore/projects/p1535/PCAMDS_jonas_test13_2023-02-13--10-41-33")
-  # # projects/p1535/popgen_shiny_JB_test1_2023-02-20--10-57-27/shiny_test1
-  # 
-  # # oraHTML <- file.path(dataDir, list.files(dataDir)[grep("ORA_results.xlsx", list.files(dataDir))])
-  # vcfRawFilePath <- file.path(dataDir, "ragi_highcov_sa0001_1k.vcf.gz")
-  # # groupingVariablesFilePath <- file.path(dataDir, "populations.txt")
-  # groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("populations.txt", list.files(dataDir))])
-  # # mdsResultsFilePath <- file.path(resultsDir, "pca_mds/plink.mds")
-  # mdsResultsFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.mds", list.files(dataDir))])
-  # # distanceMatrixTSNEFilePath <- file.path(resultsDir, "pca_mds/plink.dist")
-  # distanceMatrixTSNEFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.dist", list.files(dataDir))])
-  # 
-  # 
-  # 
-  # if (file.exists(file.path(dirname(dataDir), "input_dataset.tsv"))) {
-  #   inputData <- read_tsv(file.path(dirname(dataDir), "input_dataset.tsv"))
-  #   colnames(inputData) <- gsub(" \\[.*", "", colnames(inputData))
-  # }
-  # 
-  # ### ------------- Load data for SUSHI -----------------------------------
-  # vcfRaw <- read.vcfR(vcfRawFilePath)
-  # groupingVariables <- read.delim(groupingVariablesFilePath)
-  # mdsResults <- read.csv(mdsResultsFilePath, sep="")
-  # distanceMatrixTSNE <- read_tsv(distanceMatrixTSNEFilePath, col_names = F)
+  waiter <- waiter::Waiter$new()
+  waiter$show()
+  on.exit(waiter$hide())
+
+  # Start from here:
+  queryList = parseQueryString(session$clientData$url_search)
+  if (is.list(queryList)){
+    dataUrl <- queryList$data
+  } else {
+    dataUrl <- NULL
+  }
+  urlDataRoot = c("/srv/gstore/projects", "/srv/GT/analysis/course_sushi/public/gstore/projects")
+
+  if (!is.null(dataUrl)) {
+    dataDir <- file.path(urlDataRoot, dataUrl)
+    dataDir <- dataDir[file.exists(dataDir)][1]
+    if (!file.exists(dataDir)){
+      # ezMail(paste("invalid dataDir: ", dataDir), subject="PopGen_Structure failed", to="gxtx_data_mngt@fgcz.ethz.ch")
+      stop(paste("invalid dataDir", dataDir))
+    }
+  } else {
+    # dataDir <- "/srv/gstore/projects/p23793/o23960_EdgeR_RIVA-Ibru-6h--over--RIVA-DMSO_2022-09-02--16-54-00/RIVA-Ibru-6h--over--RIVA-DMSO"
+    # put path to test dataset
+    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test1_2023-02-20--10-57-27/shiny_test1"
+  }
+
+  resultsDir <- file.path(urlDataRoot, "/srv/gstore/projects/p1535/PCAMDS_jonas_test13_2023-02-13--10-41-33")
+  # projects/p1535/popgen_shiny_JB_test1_2023-02-20--10-57-27/shiny_test1
+
+  # oraHTML <- file.path(dataDir, list.files(dataDir)[grep("ORA_results.xlsx", list.files(dataDir))])
+  vcfRawFilePath <- file.path(dataDir, "ragi_highcov_sa0001_1k.vcf.gz")
+  # groupingVariablesFilePath <- file.path(dataDir, "populations.txt")
+  groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("populations.txt", list.files(dataDir))])
+  # mdsResultsFilePath <- file.path(resultsDir, "pca_mds/plink.mds")
+  mdsResultsFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.mds", list.files(dataDir))])
+  # distanceMatrixTSNEFilePath <- file.path(resultsDir, "pca_mds/plink.dist")
+  distanceMatrixTSNEFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.dist", list.files(dataDir))])
+
+
+
+  if (file.exists(file.path(dirname(dataDir), "input_dataset.tsv"))) {
+    inputData <- read_tsv(file.path(dirname(dataDir), "input_dataset.tsv"))
+    colnames(inputData) <- gsub(" \\[.*", "", colnames(inputData))
+  }
+
+  ### ------------- Load data for SUSHI -----------------------------------
+  vcfRaw <- read.vcfR(vcfRawFilePath)
+  groupingVariables <- read.delim(groupingVariablesFilePath)
+  mdsResults <- read.csv(mdsResultsFilePath, sep="")
+  distanceMatrixTSNE <- read_tsv(distanceMatrixTSNEFilePath, col_names = F)
   
   ### ------------- Load data for testing -----------------------------------
-  vcfRaw <- read.vcfR("data/ragi_highcov_sa0001_1k.vcf.gz")
-  groupingVariables <- read.delim("data/populations.txt") # read.table or read.delim (used before) -> delim should be fine
-  mdsResults <- read.csv("data/plink_3101.mds", sep="")
-  distanceMatrixTSNE <- read_tsv("data/plink_3101.dist", col_names = F)
+  # vcfRaw <- read.vcfR("data/ragi_highcov_sa0001_1k.vcf.gz")
+  # groupingVariables <- read.delim("data/populations.txt") # read.table or read.delim (used before) -> delim should be fine
+  # mdsResults <- read.csv("data/plink_3101.mds", sep="")
+  # distanceMatrixTSNE <- read_tsv("data/plink_3101.dist", col_names = F)
   
   
   # vcfA <- read.vcfR("~/git/ezRun/R/PCAMDS_shiny/data/sample_dataset4jonas_20230206/A_Eall.vcf.gz")
