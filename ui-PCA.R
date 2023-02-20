@@ -2,7 +2,52 @@ tabItem(
   tabName = "tab-PCA",
   fluidRow( ### NOTE: 1 row has width = 12
     column(
-      width = 9, # 3 + 9 = 12 to fill row
+      width = 2,
+      box(
+        title = "Info",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        tags$p(
+          "Principal component analysis ..."
+        ),
+        tags$p("...")
+      ),
+      box(
+        title = "Parameters",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        checkboxInput(
+          inputId = "pcaCenter",
+          label = "Center dataset before PCA",
+          value = TRUE
+        ),
+        checkboxInput(
+          inputId = "pcaScale",
+          label = "Scale dataset before PCA",
+          value = TRUE
+        ),
+        br(), br(),
+        actionBttn(
+          inputId = "paramButtonPCA",
+          label = "Apply parameters and recalculate",
+          # icon = icon("check"),
+          style = "simple",
+          color = "primary",
+          size = "md",
+          block = FALSE,
+          no_outline = TRUE
+        ),
+      )
+    ),
+      
+    column(
+      width = 7, # 3 + 9 = 12 to fill row
       box(
         title = "PCA Plot",
         width = NULL,
@@ -98,36 +143,6 @@ tabItem(
           # label = "",
           value = TRUE
         ),
-        
-        # fluidRow(
-        #   tags$head(
-        #     tags$style(type="text/css","label{ display: table-cell; text-align: center;vertical-align: middle; } .form-group { display: table-row;}")
-        #   ),
-        #   column(5,style='background-color:#f2f2f2;min-width: 300px;',
-        #          # h4("Label Issue"),
-        #          # br(),
-        #          tags$table(
-        #            tags$tr(width = "100%",
-        #                    tags$td(width = "60%", div(style = "font-size:10px;", "Width of plot")),
-        #                    tags$td(width = "40%", sliderInput(
-        #                      inputId = "plotWidthPCA",
-        #                      label = NULL,
-        #                      min = 100, max = 2000,
-        #                      value = 800, step = 10,
-        #                      ticks = FALSE
-        #                    ))),
-        #            tags$tr(width = "100%",
-        #                    tags$td(width = "60%", tags$div(style = "font-size:10pX;", "Height of plot")),
-        #                    tags$td(width = "40%", sliderInput(
-        #                      inputId = "plotHeightPCA",
-        #                      label = NULL,
-        #                      min = 100, max = 2000,
-        #                      value = 600, step = 10,
-        #                      ticks = FALSE
-        #                    )))
-        #          )
-        #   )
-        # ),
         
         sliderInput(
           inputId = "plotWidthPCA",
@@ -234,7 +249,7 @@ tabItem(
         status = "primary",
         
         tags$b(
-          "Select samples, then press the button below to redo the PCA without the samples
+          "Select samples, then press the button below to restart the PCA without the samples
           displayed below"
         ),
         br(),br(),
@@ -280,7 +295,7 @@ tabItem(
         # verbatimTextOutput('selectedSamplesPCA'),
         # textOutput('selectedSamplesPCA'),
         br(),
-        tags$b("Remove selected data and redo PCA?"),
+        tags$b("Remove selected data and restart PCA?"),
         br(),br(),
         # actionButton(
         #   inputId = "removeSamplesPCA",

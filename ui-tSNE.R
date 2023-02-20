@@ -3,12 +3,31 @@ tabItem(
   fluidRow( ### NOTE: 1 row has width = 12
     
     column(
-      width = 2, 
+      width = 2,
       box(
-        title = "t-SNE Parameters",
+        title = "Info",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        tags$p(
+          "t-SNE..."
+        ),
+        tags$p("Perplexity ...
+               Maximum iterations ...
+               &theta;: Speed/accuracy trade-off.
+               Set to 0.0 for exact TSNE
+               &eta;: learning rate"
+        )
+      ),
+      box(
+        title = "Parameters",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
         # inputs
         # actionButton(
         #   inputId = "goButton",
@@ -49,7 +68,7 @@ tabItem(
         br(), br(),
         actionBttn(
           inputId = "paramButtonTSNE",
-          label = "Apply parameters",
+          label = "Apply parameters and recalculate",
           # icon = icon("check"),
           style = "simple",
           color = "primary",

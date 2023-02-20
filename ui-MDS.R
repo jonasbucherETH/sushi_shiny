@@ -5,10 +5,24 @@ tabItem(
     column(
       width = 2, 
       box(
-        title = "MDS Parameters",
+        title = "Info",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        tags$p(
+          "MDS..."
+        ),
+        tags$p("...")
+      ),
+      box(
+        title = "Parameters",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
         # inputs
         # actionButton(
         #   inputId = "goButton",

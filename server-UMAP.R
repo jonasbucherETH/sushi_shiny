@@ -225,13 +225,22 @@ observe({
               ylim(c(min(UMAPTable[["X2"]] * 1.1), max(UMAPTable[["X2"]] * 1.2))) +
               xlim(c(min(UMAPTable[["X1"]] * 1.1), max(UMAPTable[["X1"]] * 1.2)))
             
-            output$UMAPStatic <- renderPlot(
+            output$UMAPStatic <- output$UMAPStatic2<- renderPlot(
               {
                 plotUMAP
               },
               width = as.numeric(input$plotWidthUMAP),
               height = as.numeric(input$plotHeightUMAP)
             )
+            
+            # output$UMAPStatic2 <- renderPlot(
+            #   {
+            #     plotUMAP
+            #   },
+            #   width = "auto",
+            #   height = "auto",
+            # )
+            
           } # close Event number 2
         ) # close Event number 2
         

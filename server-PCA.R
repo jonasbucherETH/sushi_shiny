@@ -4,9 +4,8 @@ observe({
     dataset <- inputDataReactive()$dataset
     datasetScaled <- inputDataReactive()$datasetScaled
     groupingVariables <- inputDataReactive()$groupingVariables
-    colourList <- inputDataReactive()$colourList
-    
-    groupingVarsCheckbox <- cbind(groupingVariables, bool = T)
+
+    # groupingVarsCheckbox <- cbind(groupingVariables, bool = T)
     
     datasetPCA <- datasetScaled
     
@@ -79,6 +78,7 @@ observe({
       {
         input$removeSamplesPCA
         input$resetSelectionPCA
+        input$paramButtonPCA
         
       },
       ignoreInit = F, # If TRUE, then, when the eventified object is first created/initialized, don't trigger the action or (compute the value). The default is FALSE.
@@ -94,7 +94,7 @@ observe({
         }
         
         ##### compute PCA
-        pcaResults <- dudi.pca(datasetPCA, center = TRUE, scale = TRUE, scan = FALSE, nf = 5)
+        pcaResults <- dudi.pca(datasetPCA, center = input$pcaCenter, scale = input$pcaScale, scan = FALSE, nf = 5)
         
         
         nPC <- pcaResults$nf # number of (> 0) principal components
@@ -241,7 +241,7 @@ observe({
               ylim(c(min(pcaTable[[input$pickFactor2PCA]] * 1.1), max(pcaTable[[input$pickFactor2PCA]] * 1.2))) +
               xlim(c(min(pcaTable[[input$pickFactor1PCA]] * 1.1), max(pcaTable[[input$pickFactor1PCA]] * 1.2)))
             
-            output$pcaStatic <- renderPlot(
+            output$pcaStatic <- output$pcaStatic2  <- renderPlot(
               {
                 plotPCA
               },
@@ -249,6 +249,14 @@ observe({
               height = as.numeric(input$plotHeightPCA)
               # , res = 96
             )
+            
+            # output$pcaStatic2 <- renderPlot(
+            #   {
+            #     plotPCA
+            #   },
+            #   width = "auto",
+            #   height = "auto",
+            # )
 
             # create id for data
             

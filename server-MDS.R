@@ -193,13 +193,21 @@ observe({
               ylim(c(min(mdsTable[["C2"]] * 1.1), max(mdsTable[["C2"]] * 1.2))) +
               xlim(c(min(mdsTable[["C1"]] * 1.1), max(mdsTable[["C1"]] * 1.2)))
             
-            output$MDSStatic <- renderPlot(
+            output$MDSStatic <- output$MDSStatic2 <- renderPlot(
               {
                 plotMDS
               },
               width = as.numeric(input$plotWidthMDS),
               height = as.numeric(input$plotHeightMDS)
             )
+            
+            # output$MDSStatic2 <- renderPlot(
+            #   {
+            #     plotMDS
+            #   },
+            #   width = "auto",
+            #   height = "auto",
+            # )
             
             output$downloadMDS <- downloadHandler(
               filename = function() {

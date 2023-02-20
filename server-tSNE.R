@@ -247,13 +247,21 @@ observe({
               ylim(c(min(tsneTable[["X2"]] * 1.1), max(tsneTable[["X2"]] * 1.2))) +
               xlim(c(min(tsneTable[["X1"]] * 1.1), max(tsneTable[["X1"]] * 1.2)))
             
-            output$tsneStatic <- renderPlot(
+            output$tsneStatic <- output$tsneStatic2 <-  renderPlot(
               {
                 plotTSNE
               },
               width = as.numeric(input$plotWidthTSNE),
               height = as.numeric(input$plotHeightTSNE)
             )
+            
+            # output$tsneStatic2 <- renderPlot(
+            #   {
+            #     plotTSNE
+            #   },
+            #   width = "auto",
+            #   height = "auto",
+            # )
             
             output$downloadTSNE <- downloadHandler(
               filename = function() {

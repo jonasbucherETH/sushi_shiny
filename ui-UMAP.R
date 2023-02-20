@@ -5,10 +5,24 @@ tabItem(
     column(
       width = 2, 
       box(
+        title = "Info",
+        width = NULL,
+        solidHeader = TRUE,
+        status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
+        tags$p(
+          "UMAP..."
+        ),
+        tags$p("...")
+      ),
+      box(
         title = "Parameters",
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
+        collapsible = TRUE,
+        collapsed = TRUE,
         numericInput(
           inputId = "n_neighborsUMAP",
           label = "The size of local neighborhood 
@@ -38,7 +52,7 @@ tabItem(
         br(), br(),
         actionBttn(
           inputId = "paramButtonUMAP",
-          label = "Apply parameters",
+          label = "Apply parameters and recalculate",
           # icon = icon("check"),
           style = "simple",
           color = "primary",

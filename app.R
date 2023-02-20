@@ -131,6 +131,14 @@ ui <- dashboardPage(
         # icon = icon("cubes")
         # icon = icon("codepen")
         # icon = icon("border-none")
+      ),
+      menuItem(
+        text = "comparison",
+        tabName = "tab-comparison",
+        icon = icon("codepen")
+        # icon = icon("cubes")
+        # icon = icon("codepen")
+        # icon = icon("border-none")
       )
     )
   ),
@@ -143,7 +151,9 @@ ui <- dashboardPage(
       source("ui-PCA.R", local = TRUE)$value,
       source("ui-tSNE.R", local = TRUE)$value,
       source("ui-UMAP.R", local = TRUE)$value,
-      source("ui-MDS.R", local = TRUE)$value
+      source("ui-MDS.R", local = TRUE)$value,
+      source("ui-comparison.R", local = TRUE)$value
+      
 
       # source("~/git/ezRun/R/PCAMDS_shiny/ui-PCA.R", local = F)$value
     )
