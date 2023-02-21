@@ -67,8 +67,7 @@ reactiveConsole(TRUE)
 #   stringsAsFactors = FALSE
 # )
 
-##############
-
+########
 # spinner <- tagList(
 #   spin_chasing_dots(),
 #   span("Loading stuff...", style="color:white;")

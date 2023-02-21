@@ -1,7 +1,7 @@
 observe({
   # withProgress(message = "Generating PCA Plots. Please wait...", {
-    vcfRaw <- inputDataReactive()$vcfRaw
-    dataset <- inputDataReactive()$dataset
+    # vcfRaw <- inputDataReactive()$vcfRaw
+    # dataset <- inputDataReactive()$dataset
     datasetScaled <- inputDataReactive()$datasetScaled
     groupingVariables <- inputDataReactive()$groupingVariables
 

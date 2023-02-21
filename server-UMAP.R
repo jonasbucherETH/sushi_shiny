@@ -1,6 +1,6 @@
 observe({
   withProgress(message = "Generating UMAP Plot. Please wait...", {
-    dataset <- inputDataReactive()$dataset
+    # dataset <- inputDataReactive()$dataset
     groupingVariables <- inputDataReactive()$groupingVariables
     datasetScaled <- inputDataReactive()$datasetScaled
     
