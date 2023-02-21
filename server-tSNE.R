@@ -112,8 +112,9 @@ observe({
           max_iter = input$max_iterTSNE, # default= 1000
           theta = input$thetaTSNE, # default = 0.5; exact t-SNE = 0.0
           eta = input$etaTSNE, # learning rate; default = 200
+          pca_center = input$tsneCenter,
+          pca_scale = input$tsneScale,
           dims = nDimsTSNE
-          # normalize = input$normalizeTSNE
         ) # default: dims = 2
         
         ### perplexity: numeric; Perplexity parameter (should not be bigger than 3 * perplexity < nrow(X) - 1

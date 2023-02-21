@@ -65,6 +65,16 @@ tabItem(
           min = 50, max = 800,
           value = 200, step = 50
         ),
+        checkboxInput(
+          inputId = "tsneCenter",
+          label = "Center dataset before t-SNE",
+          value = TRUE
+        ),
+        checkboxInput(
+          inputId = "tsneScale",
+          label = "Scale dataset before t-SNE",
+          value = FALSE
+        ),
         br(), br(),
         actionBttn(
           inputId = "paramButtonTSNE",
