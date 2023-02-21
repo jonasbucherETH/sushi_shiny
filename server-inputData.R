@@ -33,7 +33,7 @@ inputDataReactive <- reactive({
   datasetScaledFilePath <- file.path(dataDir, list.files(dataDir)[grep("datasetScaled.rds", list.files(dataDir))])
   
   # groupingVariablesFilePath <- file.path(dataDir, "populations.txt")
-  groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("grouping_vars.rds", list.files(dataDir))])
+  groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("groupingVariables.rds", list.files(dataDir))])
   # mdsResultsFilePath <- file.path(resultsDir, "pca_mds/plink.mds")
   mdsResultsFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.mds", list.files(dataDir))])
   # distanceMatrixTSNEFilePath <- file.path(resultsDir, "pca_mds/plink.dist")
