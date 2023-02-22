@@ -28,6 +28,7 @@ inputDataReactive <- reactive({
   }
 
   resultsDir <- file.path(dataDir, "shiny_test2")
+
   # projects/p1535/popgen_shiny_JB_test1_2023-02-20--10-57-27/shiny_test1
 
   # oraHTML <- file.path(dataDir, list.files(dataDir)[grep("ORA_results.xlsx", list.files(dataDir))])
@@ -37,8 +38,8 @@ inputDataReactive <- reactive({
   
   # groupingVariablesFilePath <- file.path(dataDir, "populations.txt")
   # groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("groupingVariables.rds", list.files(dataDir))])
-  groupingVariablesFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("grouping_vars.rds", list.files(resultsDir))])
-  
+  # groupingVariablesFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("grouping_vars.rds", list.files(resultsDir))])
+  groupingVariablesFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("groupingVariables.rds", list.files(resultsDir))])
   print(groupingVariablesFilePath)
   
   # mdsResultsFilePath <- file.path(resultsDir, "pca_mds/plink.mds")
