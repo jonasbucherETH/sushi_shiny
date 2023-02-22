@@ -24,7 +24,7 @@ inputDataReactive <- reactive({
     # put path to test dataset
     # dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
     # dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
-    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test12_2023-02-22--11-41-39/shiny_test12"
+    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test14_2023-02-22--14-59-25/shiny_test14"
     
     
 
