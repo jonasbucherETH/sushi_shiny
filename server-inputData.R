@@ -23,7 +23,10 @@ inputDataReactive <- reactive({
     # dataDir <- "/srv/gstore/projects/p23793/o23960_EdgeR_RIVA-Ibru-6h--over--RIVA-DMSO_2022-09-02--16-54-00/RIVA-Ibru-6h--over--RIVA-DMSO"
     # put path to test dataset
     # dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
-    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
+    # dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
+    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test12_2023-02-22--11-41-39/shiny_test12"
+    
+    
 
   }
 
@@ -37,34 +40,34 @@ inputDataReactive <- reactive({
   
   # mdsResultsFilePath <- file.path(dataDir, "pca_mds/plink.mds")
   mdsResultsFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.mds", list.files(dataDir))])
-  print(mdsResultsFilePath)
+  # print(mdsResultsFilePath)
   
   # distanceMatrixTSNEFilePath <- file.path(dataDir, "plink.dist")
   distanceMatrixTSNEFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.dist$", list.files(dataDir))])
-  print(distanceMatrixTSNEFilePath)
+  # print(distanceMatrixTSNEFilePath)
 
-  
   vcfRawFilePath <- file.path(urlDataRoot[1], inputData$`Filtered VCF`) # [2] works as well
   # vcfRawFilePath <- file.path("~/git/sushi_shiny/data/ragi_highcov_sa0001_1k.vcf.gz")
-  print(vcfRawFilePath)
+  # print(vcfRawFilePath)
   
   groupingVariablesFilePath <- file.path(urlDataRoot[1], inputData$`Grouping File`)
-  print(groupingVariablesFilePath)
+  # print(groupingVariablesFilePath)
   
-  # datasetScaledFilePath <- file.path(dataDir, list.files(dataDir)[grep("datasetScaled.rds", list.files(dataDir))])
+  datasetScaledFilePath <- file.path(dataDir, list.files(dataDir)[grep("datasetScaled.rds", list.files(dataDir))])
   # datasetScaledFilePath <- file.path(dataDir, list.files(dataDir)[grep("datasetScaled.rds", list.files(dataDir))])
   # print(datasetScaledFilePath)
   
   ### ------------- Load data for SUSHI -----------------------------------
-  vcfRaw <- read.vcfR(vcfRawFilePath)
-  # datasetScaled <- readRDS(datasetScaledFilePath)
   # vcfRaw <- read.vcfR(vcfRawFilePath)
-  vcfGenind <- vcfR2genind(vcfRaw)
-  datasetScaled <- scaleGen(vcfGenind,
-                            center = FALSE,
-                            scale = FALSE,
-                            NA.method="mean")
+  # vcfRaw <- read.vcfR(vcfRawFilePath)
+  # vcfGenind <- vcfR2genind(vcfRaw)
+  # datasetScaled <- scaleGen(vcfGenind,
+  #                           center = FALSE,
+  #                           scale = FALSE,
+  #                           NA.method="mean")
   # groupingVariables <- readRDS(groupingVariablesFilePath)
+  
+  datasetScaled <- readRDS(datasetScaledFilePath)
   groupingVariables <- read.delim(groupingVariablesFilePath)
   mdsResults <- read.csv(mdsResultsFilePath, sep="")
   distanceMatrixTSNE <- read_tsv(distanceMatrixTSNEFilePath, col_names = F)
