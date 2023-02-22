@@ -47,6 +47,7 @@ library("Rtsne")
 library("uwot")
 # library("shinydust")
 library("shinyWidgets")
+library("readr")
 # library("testthat")
 
 # console.error = function () {

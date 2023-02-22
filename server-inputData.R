@@ -23,51 +23,49 @@ inputDataReactive <- reactive({
     # dataDir <- "/srv/gstore/projects/p23793/o23960_EdgeR_RIVA-Ibru-6h--over--RIVA-DMSO_2022-09-02--16-54-00/RIVA-Ibru-6h--over--RIVA-DMSO"
     # put path to test dataset
     # dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
-    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07"
-    
+    dataDir <- "/srv/gstore/projects/p1535/popgen_shiny_JB_test2_2023-02-20--16-26-07/shiny_test2"
+
   }
 
-  resultsDir <- file.path(dataDir, "shiny_test2")
+  if (file.exists(file.path(dirname(dataDir), "input_dataset.tsv"))) {
+    inputData <- read_tsv(file.path(dirname(dataDir), "input_dataset.tsv"))
+    colnames(inputData) <- gsub(" \\[.*", "", colnames(inputData))
+  }
 
-  # projects/p1535/popgen_shiny_JB_test1_2023-02-20--10-57-27/shiny_test1
+  # groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("grouping", list.files(dataDir))])
+  # print(groupingVariablesFilePath)
+  
+  # mdsResultsFilePath <- file.path(dataDir, "pca_mds/plink.mds")
+  mdsResultsFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.mds", list.files(dataDir))])
+  print(mdsResultsFilePath)
+  
+  # distanceMatrixTSNEFilePath <- file.path(dataDir, "plink.dist")
+  distanceMatrixTSNEFilePath <- file.path(dataDir, list.files(dataDir)[grep("plink.dist$", list.files(dataDir))])
+  print(distanceMatrixTSNEFilePath)
 
-  # oraHTML <- file.path(dataDir, list.files(dataDir)[grep("ORA_results.xlsx", list.files(dataDir))])
-  # vcfRawFilePath <- file.path(dataDir, "ragi_highcov_sa0001_1k.vcf.gz")
+  
+  vcfRawFilePath <- file.path(urlDataRoot[1], inputData$`Filtered VCF`) # [2] works as well
+  # vcfRawFilePath <- file.path("~/git/sushi_shiny/data/ragi_highcov_sa0001_1k.vcf.gz")
+  print(vcfRawFilePath)
+  
+  groupingVariablesFilePath <- file.path(urlDataRoot[1], inputData$`Grouping File`)
+  print(groupingVariablesFilePath)
+  
+  # datasetScaledFilePath <- file.path(dataDir, list.files(dataDir)[grep("datasetScaled.rds", list.files(dataDir))])
   # datasetScaledFilePath <- file.path(dataDir, list.files(dataDir)[grep("datasetScaled.rds", list.files(dataDir))])
   # print(datasetScaledFilePath)
   
-  # groupingVariablesFilePath <- file.path(dataDir, "populations.txt")
-  # groupingVariablesFilePath <- file.path(dataDir, list.files(dataDir)[grep("groupingVariables.rds", list.files(dataDir))])
-  # groupingVariablesFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("grouping_vars.rds", list.files(resultsDir))])
-  groupingVariablesFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("groupingVariables.rds", list.files(resultsDir))])
-  print(groupingVariablesFilePath)
-  
-  # mdsResultsFilePath <- file.path(resultsDir, "pca_mds/plink.mds")
-  mdsResultsFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("plink.mds", list.files(resultsDir))])
-  print(mdsResultsFilePath)
-  
-  # distanceMatrixTSNEFilePath <- file.path(resultsDir, "plink.dist")
-  distanceMatrixTSNEFilePath <- file.path(resultsDir, list.files(resultsDir)[grep("plink.dist$", list.files(resultsDir))])
-  print(distanceMatrixTSNEFilePath)
-
-  if (file.exists(file.path(dirname(resultsDir), "input_dataset.tsv"))) {
-    inputData <- read_tsv(file.path(dirname(resultsDir), "input_dataset.tsv"))
-    colnames(inputData) <- gsub(" \\[.*", "", colnames(inputData))
-  }
-  
-  datasetScaledFilePath <- file.path(urlDataRoot[1], inputData$`Filtered VCF`) # [2] works as well
-  print(datasetScaledFilePath)
-  
   ### ------------- Load data for SUSHI -----------------------------------
-  # vcfRaw <- read.vcfR(vcfRawFilePath)
+  vcfRaw <- read.vcfR(vcfRawFilePath)
   # datasetScaled <- readRDS(datasetScaledFilePath)
-  vcfRaw <- read.vcfR(datasetScaledFilePath)
+  # vcfRaw <- read.vcfR(vcfRawFilePath)
   vcfGenind <- vcfR2genind(vcfRaw)
   datasetScaled <- scaleGen(vcfGenind,
                             center = FALSE,
                             scale = FALSE,
                             NA.method="mean")
-  groupingVariables <- readRDS(groupingVariablesFilePath)
+  # groupingVariables <- readRDS(groupingVariablesFilePath)
+  groupingVariables <- read.delim(groupingVariablesFilePath)
   mdsResults <- read.csv(mdsResultsFilePath, sep="")
   distanceMatrixTSNE <- read_tsv(distanceMatrixTSNEFilePath, col_names = F)
   
