@@ -115,7 +115,7 @@ observe({
         #   updateSelectInput(session = session, inputId = "distanceMetricUMAP", choices = c("euclidean"), selected = "euclidean")
         # }
         
-        umapResult <- umap(
+        umapResults <- umap(
           X = datasetUMAP,
           n_neighbors = input$n_neighborsUMAP, # for nn_method = "fnn", the distance metric is always "euclidean")
           nn_method = nnMethodChoice, # By default, if X has less than 4,096 vertices, the exact nearest neighbors are found
@@ -124,7 +124,7 @@ observe({
           scale = input$scaleUMAP # TRUE: Scale each column to zero mean and variance 1
         ) # returns matrix
         
-        UMAPTable <- data.frame(groupingVariables, umapResult, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
+        UMAPTable <- data.frame(groupingVariables, umapResults, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
         
         observeEvent( # Event number 2
           {
