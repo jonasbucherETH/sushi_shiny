@@ -14,11 +14,13 @@ tabItem(
         tags$p(
           "t-SNE..."
         ),
-        tags$p("Perplexity ...
-               Maximum iterations ...
-               &theta;: Speed/accuracy trade-off.
-               Set to 0.0 for exact TSNE
-               &eta;: learning rate"
+        tags$p("Parameters"),
+        tags$ul(
+          tags$li("Perplexity ... "), 
+          tags$li("Maximum iterations ..."), 
+          tags$li(HTML("&theta;: Speed/accuracy trade-off.
+               Set to 0.0 for exact TSNE")),
+          tags$li(HTML("&eta;: learning rate"))
         )
       ),
       box(
@@ -39,6 +41,12 @@ tabItem(
         #   label = "Normalize distance matrix (recommended for Euclidean distances)",
         #   value = TRUE
         # ),
+        numericInput(
+          inputId = "initialDimsTSNE",
+          label = "Number of dimensions kept in PCA step",
+          min = 20, max = 60,
+          value = 40, step = 10
+        ),
         numericInput(
           inputId = "perplexityTSNE",
           label = "Perplexity parameter",

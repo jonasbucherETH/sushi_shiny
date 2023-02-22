@@ -107,6 +107,7 @@ observe({
           distanceMatrixTSNE,
           # perplexity=as.numeric(input$perplexityTSNE), # default = 30; good range = 5-50
           perplexity = input$perplexityTSNE, # default = 30; good range = 5-50
+          initial_dims = input$initialDimsTSNE,
           check_duplicates = FALSE,
           is_distance = TRUE,
           max_iter = input$max_iterTSNE, # default= 1000

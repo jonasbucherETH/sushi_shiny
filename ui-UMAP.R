@@ -14,7 +14,17 @@ tabItem(
         tags$p(
           "UMAP..."
         ),
-        tags$p("...")
+        tags$p("Parameters"),
+        tags$ul(
+          tags$li("Larger values for the size of the local neighborhood  
+          used for manifold approximation result in more global views of 
+                  the manifold, while smaller values result in more local 
+                  data being preserved"), 
+          tags$li("With the exact method (fnn) for finding nearest neighbors,
+               it is only possible to use euclidean as a distance metric
+               to find nearest neighbors"), 
+          tags$li("Third list item")
+        )
       ),
       box(
         title = "Parameters",
@@ -40,7 +50,7 @@ tabItem(
         tags$b("Type of distance metric to use to find nearest neighbors"),
         selectInput(
           inputId = "distanceMetricUMAP",
-          label = "With the exact method (fnn), only euclidean is compatible",
+          label = "",
           choices = c("euclidean","cosine","manhattan",
                       "hamming","correlation","categorical")
         ),
