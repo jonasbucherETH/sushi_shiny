@@ -257,6 +257,31 @@ observe({
               height = as.numeric(input$plotHeightTSNE)
             )
             
+            output$tsneScree <- renderPlot({
+              tabVarprop3 <- tabVarprop
+              tabVarprop3$PC <- gsub("PC", "", tabVarprop3$PC)
+              tabVarprop3$PC <- factor(tabVarprop3$PC, levels = tabVarprop3$PC)
+              tabVarprop3$variance <- as.numeric(tabVarprop3$variance)
+              tabVarprop3$pct <- as.numeric(tabVarprop3$pct)
+              tabVarprop3$pct_cum <- as.numeric(tabVarprop3$pct_cum)
+              
+              if (nrow(tabVarprop3) > 70) {
+                tabVarprop3 <- tabVarprop3[1:70,]
+              }
+              
+              pcaScree <- tabVarprop3 %>%
+                ggplot(aes(x = PC)) +
+                geom_col(aes(y = pct)) +
+                geom_line(aes(y = pct_cum, group = 1)) +
+                geom_point(aes(y = pct_cum)) +
+                labs(x = "Principal component", y = "Fraction variance explained (%)") +
+                scale_y_continuous(n.breaks = 20) +
+                theme_classic(base_size = as.numeric(input$textSizeTSNE))
+              tsneScree
+              
+            }
+            )
+            
             # output$tsneStatic2 <- renderPlot(
             #   {
             #     plotTSNE

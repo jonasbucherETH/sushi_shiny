@@ -12,12 +12,23 @@ tabItem(
         collapsible = TRUE,
         collapsed = TRUE,
         tags$p(
-          "t-SNE..."
+          "t-SNE...
+          Sensitive to hyperparameters
+          Depends a lot on the data
+          Long runtime"
         ),
         tags$p("Parameters"),
         tags$ul(
-          tags$li("Perplexity ... "), 
-          tags$li("Maximum iterations ..."), 
+          tags$li("Number of initial dimensions: Check the plot below
+                  to decide how many Principal Components to keep in the
+                  initial step of reduction through PCA."), 
+          tags$li("Perplexity defines the balance between focus on
+          local versus global aspects of your data.
+          Can not be bigger than N/3 (N = number of data points).
+                  Optimal values of perplexity are usually around N^(1/2)"), 
+          tags$li("Maximum iterations: Higher numbers lead to clearer clusters,
+                  the runtime can however be very long for high number of
+                  iterations, especially with big datasets."), 
           tags$li(HTML("&theta;: Speed/accuracy trade-off.
                Set to 0.0 for exact TSNE")),
           tags$li(HTML("&eta;: learning rate"))
@@ -44,8 +55,8 @@ tabItem(
         numericInput(
           inputId = "initialDimsTSNE",
           label = "Number of dimensions kept in PCA step",
-          min = 20, max = 60,
-          value = 40, step = 10
+          min = 10, max = 70,
+          value = 40, step = 5
         ),
         numericInput(
           inputId = "perplexityTSNE",
@@ -244,6 +255,22 @@ tabItem(
         #                multiple = TRUE),
         
         uiOutput('colourPanelTSNE'),
+      )
+    )
+  ),
+  fluidRow( 
+    column(
+      width = 12,
+      box(
+        title = "Scree Plot",
+        width = 6, 
+        solidHeader = TRUE,
+        status = "primary",
+        plotOutput(
+          outputId ="tsneScree",
+          inline = F,
+          width = "100%"
+        )
       )
     )
   )
