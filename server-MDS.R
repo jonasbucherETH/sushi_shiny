@@ -78,7 +78,7 @@ observe({
       withProgress(message = "Generating MDS Plot. Please wait...", {
         
         mdsCoords <- mdsResults %>%
-          select(num_range(prefix = "C", range = 1:5))
+          dplyr::select(num_range(prefix = "C", range = 1:5))
         mdsTable <- data.frame(groupingVariables, mdsCoords, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
         
         observeEvent(

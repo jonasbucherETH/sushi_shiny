@@ -1,0 +1,13 @@
+name: popgen_structure2
+title: PopGen_Structure
+username: zajac
+account: zajac
+server: fgcz-shiny.uzh.ch
+hostUrl: https://fgcz-shiny.uzh.ch/__api__
+appId: 50
+bundleId: 225
+url: https://fgcz-shiny.uzh.ch/PopGen_Structure/
+when: 1677246301.36055
+lastSyncTime: 1677246301.36055
+asMultiple: FALSE
+asStatic: FALSE

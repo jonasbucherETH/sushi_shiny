@@ -122,7 +122,7 @@ observe({
         #   as_tibble(rownames = "gene")
         pc_loadings$gene <- rownames(pc_loadings)
         top_genes <- pc_loadings %>% 
-          select(gene, PC1, PC2) %>%
+          dplyr::select(gene, PC1, PC2) %>%
           pivot_longer(matches("PC"), names_to = "PC", values_to = "loading") %>% 
           group_by(PC) %>% 
           arrange(desc(abs(loading)))
