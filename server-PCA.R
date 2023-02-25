@@ -89,7 +89,7 @@ observe({
         removeRowsPCA <- input$sampleTablePCA_rows_selected
         if (length(removeRowsPCA)) {
           s <- c(removeRowsPCA)
-          datasetPCA <- dataset[-s, ]
+          datasetPCA <- datasetScaled[-s, ]
           groupingVariables <- groupingVariables[-s, ]
         }
         
