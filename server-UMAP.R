@@ -121,6 +121,7 @@ observe({
           nn_method = nnMethodChoice, # By default, if X has less than 4,096 vertices, the exact nearest neighbors are found
           n_components = 2,
           metric = input$distanceMetricUMAP,
+          min_dist = input$minDistUMAP,
           scale = input$scaleUMAP # TRUE: Scale each column to zero mean and variance 1
         ) # returns matrix
         

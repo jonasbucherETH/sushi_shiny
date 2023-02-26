@@ -12,26 +12,31 @@ tabItem(
         collapsible = TRUE,
         collapsed = TRUE,
         tags$p(
-          "t-SNE...
-          Sensitive to hyperparameters
-          Depends a lot on the data
-          Long runtime"
+          "t-Distributed stochastic neighbor embedding is a graph-based machine
+          learning method for dimensionality reduction.
+          t-SNE provides more flexibility as it is non-linear and through its 
+          adjustable hyperparameters. The focal parameters are the number of
+          initial dimensions and the perplexity.
+          Note that the distances between points and clusters in the plot
+          cannot be interpreted as being proportional to the distance in the
+          high-dimensional input data."
         ),
-        tags$p("Parameters"),
+        tags$b("Parameters"),
         tags$ul(
-          tags$li("Number of initial dimensions: Check the plot below
-                  to decide how many Principal Components to keep in the
+          tags$li("Number of initial dimensions: Check the scree plot in the
+                  PCA part to decide how many Principal Components to keep in the
                   initial step of reduction through PCA."), 
-          tags$li("Perplexity defines the balance between focus on
-          local versus global aspects of your data.
+          tags$li("Perplexity is the number of nearest neighbours the .
           Can not be bigger than N/3 (N = number of data points).
-                  Optimal values of perplexity are usually around N^(1/2)"), 
+          Optimal values of perplexity are usually around N^(1/2), but
+          fine-tuning this parameters is advised."), 
           tags$li("Maximum iterations: Higher numbers lead to clearer clusters,
                   the runtime can however be very long for high number of
-                  iterations, especially with big datasets."), 
-          tags$li(HTML("&theta;: Speed/accuracy trade-off.
-               Set to 0.0 for exact TSNE")),
-          tags$li(HTML("&eta;: learning rate"))
+                  iterations, especially with big datasets.")
+          # , 
+          # tags$li(HTML("&theta;: Speed/accuracy trade-off.
+          #      Set to 0.0 for exact TSNE")),
+          # tags$li(HTML("&eta;: learning rate"))
         )
       ),
       box(
@@ -55,8 +60,8 @@ tabItem(
         numericInput(
           inputId = "initialDimsTSNE",
           label = "Number of dimensions kept in PCA step",
-          min = 10, max = 70,
-          value = 40, step = 5
+          min = 5, max = 100,
+          value = 20, step = 5
         ),
         numericInput(
           inputId = "perplexityTSNE",
@@ -122,10 +127,20 @@ tabItem(
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
-        downloadButton(
+        downloadBttn(
           outputId = "downloadTSNE",
-          label = "Download t-SNE Plot (PDF)"
+          label = "Download t-SNE Plot (PDF)",
+          style = "unite",
+          color = "primary",
+          size = "sm",
+          block = FALSE,
+          no_outline = TRUE,
+          icon = shiny::icon("download")
         ),
+        # downloadButton(
+        #   outputId = "downloadTSNE",
+        #   label = "Download t-SNE Plot (PDF)"
+        # ),
         br(), br(),
         plotOutput(
           outputId = "tsneStatic",
@@ -257,21 +272,22 @@ tabItem(
         uiOutput('colourPanelTSNE'),
       )
     )
-  ),
-  fluidRow( 
-    column(
-      width = 12,
-      box(
-        title = "Scree Plot",
-        width = 6, 
-        solidHeader = TRUE,
-        status = "primary",
-        plotOutput(
-          outputId ="tsneScree",
-          inline = F,
-          width = "100%"
-        )
-      )
-    )
   )
+  # ,
+  # fluidRow( 
+  #   column(
+  #     width = 12,
+  #     box(
+  #       title = "Scree Plot",
+  #       width = 6, 
+  #       solidHeader = TRUE,
+  #       status = "primary",
+  #       plotOutput(
+  #         outputId ="tsneScree",
+  #         inline = F,
+  #         width = "100%"
+  #       )
+  #     )
+  #   )
+  # )
 ) # close tabItem

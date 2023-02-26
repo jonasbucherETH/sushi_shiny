@@ -77,7 +77,7 @@ observe({
     observeEvent( # Event number 1
       {
         input$removeSamplesPCA
-        input$resetSelectionPCA
+        # input$resetSelectionPCA
         input$paramButtonPCA
         
       },
@@ -117,12 +117,15 @@ observe({
         
         # Get the gene loadings (in dudi.pca: $c1)
         pc_loadings <- pcaResults$c1
-        colnames(pc_loadings) <- c("PC1", "PC2") 
+        colnames(pc_loadings) <- c("PC1", "PC2")
+        # colnames(pc_loadings) <- pcList
+        
         # pc_loadings <- pc_loadings %>% 
         #   as_tibble(rownames = "gene")
         pc_loadings$gene <- rownames(pc_loadings)
         top_genes <- pc_loadings %>% 
           dplyr::select(gene, PC1, PC2) %>%
+          # dplyr::select(gene, pcList) %>%
           pivot_longer(matches("PC"), names_to = "PC", values_to = "loading") %>% 
           group_by(PC) %>% 
           arrange(desc(abs(loading)))
@@ -325,6 +328,7 @@ observe({
             
             output$pcaLoadings <- DT::renderDataTable({
               datatable(top_genes, rownames = F) %>% formatRound("loading", digits = 3)
+              # datatable(top_genes[[c(input$pickFactor1PCA,input$pickFactor2PCA)]], rownames = F) %>% formatRound("loading", digits = 3)
             })
             
             

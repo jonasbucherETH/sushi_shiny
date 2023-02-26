@@ -12,18 +12,28 @@ tabItem(
         collapsible = TRUE,
         collapsed = TRUE,
         tags$p(
-          "UMAP..."
+          "Uniform manifold approximation and projection (UMAP) is a novel
+          alternative machine learning algorithm to t-SNE, with the benefits
+          of improved runtime and the potential to highlight local and subtle
+          structures of the data. The output is based on a graph topology and
+          highly dependent on the chosen parameters, particularly on the number
+          of neighbours considered and the minimum distance between points.
+
+          Note that the distances between points and clusters in the plot
+          cannot be interpreted as being proportional to the distance in the
+          high-dimensional input data."
         ),
         tags$p("Parameters"),
         tags$ul(
-          tags$li("Larger values for the size of the local neighborhood  
-          used for manifold approximation result in more global views of 
-                  the manifold, while smaller values result in more local 
-                  data being preserved"), 
+          tags$li("Minimum distance: The effective minimum distance between
+          embedded points: Small values will result in tight clusters,
+          larger values will result in a more even dispersal of points."),
+          tags$li("Number of neighbours: With larger values more neighbours are
+          considered for each point, which result in more global views, while
+          smaller values result in more local structures being preserved."), 
           tags$li("With the exact method (fnn) for finding nearest neighbors,
                it is only possible to use euclidean as a distance metric
                to find nearest neighbors"), 
-          tags$li("Third list item")
         )
       ),
       box(
@@ -35,10 +45,15 @@ tabItem(
         collapsed = TRUE,
         numericInput(
           inputId = "n_neighborsUMAP",
-          label = "The size of local neighborhood 
-          used for manifold approximation",
+          label = "Number of neighbours",
           min = 2, max = 100,
           value = 15, step = 1
+        ),
+        numericInput(
+          inputId = "minDistUMAP",
+          label = "Minimum distance",
+          min = 0.01, max = 1,
+          value = 0.01, step = 0.01
         ),
         tags$b("Method for finding nearest neighbors"),
         selectInput(
@@ -88,10 +103,20 @@ tabItem(
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
-        downloadButton(
+        downloadBttn(
           outputId = "downloadUMAP",
-          label = "Download UMAP Plot (PDF)"
+          label = "Download UMAP Plot (PDF)",
+          style = "unite",
+          color = "primary",
+          size = "sm",
+          block = FALSE,
+          no_outline = TRUE,
+          icon = shiny::icon("download")
         ),
+        # downloadButton(
+        #   outputId = "downloadUMAP",
+        #   label = "Download UMAP Plot (PDF)"
+        # ),
         br(), br(),
         plotOutput(
           outputId = "UMAPStatic",

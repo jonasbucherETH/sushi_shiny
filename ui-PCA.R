@@ -11,9 +11,20 @@ tabItem(
         collapsible = TRUE,
         collapsed = TRUE,
         tags$p(
-          "Principal component analysis ..."
+          "Principal component analysis is a popular dimensionality reduction
+          method. PCA works by identifying the principal components (PCs) of the
+          data, which are linear combinations of the original variables that
+          explain the largest amount of variability in the data.
+          The first principal component is chosen to explain as much of the
+          variability as possible, followed by the second principal component, 
+          and so on.
+          The respective proportion of variance explained of the principal
+          components is shown below in the scree plot and additionally
+          indicated on the axes labels of the figure."
         ),
-        tags$p("...")
+        tags$p("The loadings table below describe the contribution of the genes.
+        The values range between -1 and 1, a higher absolute value indicates a
+        bigger contribution to the principal component.")
       ),
       box(
         title = "Parameters",
@@ -35,7 +46,7 @@ tabItem(
         br(), br(),
         actionBttn(
           inputId = "paramButtonPCA",
-          label = "Apply parameters and recalculate",
+          label = "Apply parameters",
           # icon = icon("check"),
           style = "simple",
           color = "primary",
@@ -313,12 +324,12 @@ tabItem(
           block = FALSE,
           no_outline = TRUE
         ),
-        br(),br(),
-        actionButton(
-          inputId = "resetSelectionPCA",
-          label = "Reset selected samples",
-          icon = NULL
-        )
+        # br(),br(),
+        # actionButton(
+        #   inputId = "resetSelectionPCA",
+        #   label = "Reset selected samples",
+        #   icon = NULL
+        # )
       )
     ),
 

@@ -16,44 +16,44 @@ tabItem(
         ),
         tags$p("...")
       ),
-      box(
-        title = "Parameters",
-        width = NULL,
-        solidHeader = TRUE,
-        status = "primary",
-        collapsible = TRUE,
-        collapsed = TRUE,
-        # inputs
-        # actionButton(
-        #   inputId = "goButton",
-        #   label = "Apply parameters",
-        #   icon = NULL
-        # ),
-        # checkboxInput(
-        #   inputId = "normalizeMDS",
-        #   label = "Normalize distance matrix (recommended for Euclidean distances)",
-        #   value = TRUE
-        # ),
-        br(), br(),
-        actionBttn(
-          inputId = "paramButtonMDS",
-          label = "Apply parameters",
-          # icon = icon("check"),
-          style = "simple",
-          color = "primary",
-          size = "md",
-          block = FALSE,
-          no_outline = TRUE
-        ),
-        # selectInput(
-        #   inputId = "removeSamplesMDS",
-        #   label = "Select samples to exclude",
-        #   choices = "",
-        #   selected = ""
-        # ),
-        
-      ) # close box 
-    ), # close t-SNE parameters column
+      # box(
+      #   title = "Parameters",
+      #   width = NULL,
+      #   solidHeader = TRUE,
+      #   status = "primary",
+      #   collapsible = TRUE,
+      #   collapsed = TRUE,
+      #   # inputs
+      #   # actionButton(
+      #   #   inputId = "goButton",
+      #   #   label = "Apply parameters",
+      #   #   icon = NULL
+      #   # ),
+      #   # checkboxInput(
+      #   #   inputId = "normalizeMDS",
+      #   #   label = "Normalize distance matrix (recommended for Euclidean distances)",
+      #   #   value = TRUE
+      #   # ),
+      #   br(), br(),
+      #   actionBttn(
+      #     inputId = "paramButtonMDS",
+      #     label = "Apply parameters",
+      #     # icon = icon("check"),
+      #     style = "simple",
+      #     color = "primary",
+      #     size = "md",
+      #     block = FALSE,
+      #     no_outline = TRUE
+      #   ),
+      #   # selectInput(
+      #   #   inputId = "removeSamplesMDS",
+      #   #   label = "Select samples to exclude",
+      #   #   choices = "",
+      #   #   selected = ""
+      #   # ),
+      #   
+      # ) # close box 
+    ),
     
     column(
       width = 7,
@@ -62,10 +62,20 @@ tabItem(
         width = NULL,
         solidHeader = TRUE,
         status = "primary",
-        downloadButton(
+        downloadBttn(
           outputId = "downloadMDS",
-          label = "Download MDS Plot (PDF)"
+          label = "Download MDS Plot (PDF)",
+          style = "unite",
+          color = "primary",
+          size = "sm",
+          block = FALSE,
+          no_outline = TRUE,
+          icon = shiny::icon("download")
         ),
+        # downloadButton(
+        #   outputId = "downloadMDS",
+        #   label = "Download MDS Plot (PDF)"
+        # ),
         br(), br(),
         plotOutput(
           outputId = "MDSStatic",
