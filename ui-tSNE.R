@@ -23,8 +23,8 @@ tabItem(
         ),
         tags$b("Parameters"),
         tags$ul(
-          tags$li("Number of initial dimensions: Check the scree plot in the
-                  PCA part to decide how many Principal Components to keep in the
+          tags$li("Number of initial dimensions: Check the scree plot below
+          to decide how many Principal Components to keep in the
                   initial step of reduction through PCA."), 
           tags$li("Perplexity is the number of nearest neighbours the .
           Can not be bigger than N/3 (N = number of data points).
@@ -273,21 +273,21 @@ tabItem(
       )
     )
   )
-  # ,
-  # fluidRow( 
-  #   column(
-  #     width = 12,
-  #     box(
-  #       title = "Scree Plot",
-  #       width = 6, 
-  #       solidHeader = TRUE,
-  #       status = "primary",
-  #       plotOutput(
-  #         outputId ="tsneScree",
-  #         inline = F,
-  #         width = "100%"
-  #       )
-  #     )
-  #   )
-  # )
+  ,
+  fluidRow(
+    column(
+      width = 12,
+      box(
+        title = "Scree Plot",
+        width = 6,
+        solidHeader = TRUE,
+        status = "primary",
+        plotOutput(
+          outputId ="tsneScree",
+          inline = F,
+          width = "100%"
+        )
+      )
+    )
+  )
 ) # close tabItem

@@ -2,6 +2,9 @@ observe({
   # withProgress(message = "Generating t-SNE Plot. Please wait...", {
     distanceMatrixTSNE <- inputDataReactive()$distanceMatrixTSNE
     groupingVariables <- inputDataReactive()$groupingVariables
+    datasetScaled <- inputDataReactive()$datasetScaled
+    
+    datasetTSNE <- datasetScaled
     # factorlevels <- inputDataReactive()$factorlevels
     
     # print(colourList)
@@ -115,37 +118,54 @@ observe({
           max_iter = input$max_iterTSNE, # default= 1000
           theta = input$thetaTSNE, # default = 0.5; exact t-SNE = 0.0
           eta = input$etaTSNE, # learning rate; default = 200
-          pca_center = input$tsneCenter,
-          pca_scale = input$tsneScale,
+          TSNE_center = input$tsneCenter,
+          TSNE_scale = input$tsneScale,
           dims = nDimsTSNE
         ) # default: dims = 2
         
+        tsneTable <- data.frame(groupingVariables, tsneResult$Y, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
         
-        pcaResultsTSNE <- dudi.pca(datasetPCA, center = input$pcaCenter, scale = input$pcaScale, scan = FALSE, nf = 5)
-        
-        nPC <- pcaResults$nf # number of (> 0) principal components
+        pcaResultsTSNE <- dudi.pca(datasetTSNE, center = T, scale = T, scan = FALSE, nf = 5)
+
+        nPCTSNE <- pcaResultsTSNE$nf # number of (> 0) principal components
         nGrouping <- ncol(groupingVariables)
-        pcaVarprop <- pcaResults$eig
+        pcaVarpropTSNE <- pcaResultsTSNE$eig
         
-        pcaVarprop <- tibble(PC = paste0("PC", factor(1:length(pcaVarprop))), variance = pcaVarprop) %>% 
+        pcaVarpropTSNE <- tibble(PC = paste0("PC", factor(1:length(pcaVarpropTSNE))), variance = pcaVarpropTSNE) %>% 
           mutate(pct = format(variance/sum(variance)*100, digits = 2)) %>%
           # mutate(pct = variance/sum(variance)*100) %>% 
           mutate(pct_cum = cumsum(pct))
-        pcaVarprop$PC <- factor(pcaVarprop$PC, levels = pcaVarprop$PC)
+        pcaVarpropTSNE$PC <- factor(pcaVarpropTSNE$PC, levels = pcaVarpropTSNE$PC)
         
         
-        pcaTable <- data.frame(groupingVariables, pcaResults$li, stringsAsFactors = FALSE, row.names = rownames(datasetPCA))
+        pcaTableTSNE <- data.frame(groupingVariables, pcaResultsTSNE$li, stringsAsFactors = FALSE, row.names = rownames(datasetTSNE))
         
-        tabVarprop <- pcaVarprop
-        for (i in 1:nPC) {
-          colnames(pcaTable)[i + nGrouping] <- paste0("PC", i)
+        tabVarpropTSNE <- pcaVarpropTSNE
+        for (i in 1:nPCTSNE) {
+          colnames(pcaTableTSNE)[i + nGrouping] <- paste0("PC", i)
         }
         
-        ### perplexity: numeric; Perplexity parameter (should not be bigger than 3 * perplexity < nrow(X) - 1
-        ### theta:	numeric; Speed/accuracy trade-off (increase for less accuracy), set to 0.0 for exact TSNE (default: 0.5)
-        
-        tsneTable <- data.frame(groupingVariables, tsneResult$Y, stringsAsFactors = FALSE, row.names = rownames(groupingVariables))
-        
+        # N_perm <- 10
+        # expl_var_perm <- matrix(NA, ncol = length(pcaResultsTSNE$sdev), nrow = N_perm)
+        # for(k in 1:N_perm)
+        # {
+        #   expr_perm <- apply(expr,2,sample)
+        #   PC_perm <- prcomp(t(log10(expr_perm+1)), center=TRUE, scale=FALSE)
+        #   expl_var_perm[k,] <- PC_perm$sdev^2/sum(PC_perm$sdev^2)
+        # }
+        # plot(expl_var[1:50]~seq(1:50), ylab="EXPLAINED VARIANCE",
+        #      col="darkgreen", type='o', xlab="PRINCIPAL COMPONENTS")
+        # lines(colMeans(expl_var_perm)[1:50]~seq(1:50),col="red")
+        # legend("topright", c("Explained by PCS", "Explained by chance"),
+        #        fill=c("darkgreen","red"), inset=0.02)
+        # 
+        # pval <- apply(t(expl_var_perm) >= expl_var,1,sum) / N_perm
+        # plot(pval[1:50]~seq(1:50),col="darkred",type='o',
+        #      xlab="PRINCIPAL COMPONENTS",ylab="PVALUE")
+        # optPC<-head(which(pval>=0.05),1)-1
+        # mtext(paste0("OPTIMAL NUMBER OF PRINCIPAL COMPONENTS = ", optPC))
+
+
         observeEvent(
           { # Event number 2: only need axis inputs here, for the others no need for redrawing plot (?)
             input$sampleLabelsTSNE
@@ -280,30 +300,32 @@ observe({
               height = as.numeric(input$plotHeightTSNE)
             )
             
-            # output$tsneScree <- renderPlot({
-            #   tabVarprop3 <- tabVarprop
-            #   tabVarprop3$PC <- gsub("PC", "", tabVarprop3$PC)
-            #   tabVarprop3$PC <- factor(tabVarprop3$PC, levels = tabVarprop3$PC)
-            #   tabVarprop3$variance <- as.numeric(tabVarprop3$variance)
-            #   tabVarprop3$pct <- as.numeric(tabVarprop3$pct)
-            #   tabVarprop3$pct_cum <- as.numeric(tabVarprop3$pct_cum)
-            #   
-            #   if (nrow(tabVarprop3) > 70) {
-            #     tabVarprop3 <- tabVarprop3[1:70,]
-            #   }
-            #   
-            #   pcaScree <- tabVarprop3 %>%
-            #     ggplot(aes(x = PC)) +
-            #     geom_col(aes(y = pct)) +
-            #     geom_line(aes(y = pct_cum, group = 1)) +
-            #     geom_point(aes(y = pct_cum)) +
-            #     labs(x = "Principal component", y = "Fraction variance explained (%)") +
-            #     scale_y_continuous(n.breaks = 20) +
-            #     theme_classic(base_size = as.numeric(input$textSizeTSNE))
-            #   tsneScree
-            #   
-            # }
-            # )
+            output$tsneScree <- renderPlot({
+              tabVarprop3 <- tabVarpropTSNE
+              tabVarprop3$PC <- gsub("PC", "", tabVarprop3$PC)
+              tabVarprop3$PC <- factor(tabVarprop3$PC, levels = tabVarprop3$PC)
+              tabVarprop3$variance <- as.numeric(tabVarprop3$variance)
+              tabVarprop3$pct <- as.numeric(tabVarprop3$pct)
+              tabVarprop3$pct_cum <- as.numeric(tabVarprop3$pct_cum)
+
+              if (nrow(tabVarprop3) > 100) {
+                tabVarprop3 <- tabVarprop3[1:100,]
+              }
+
+              TSNEScree <- tabVarprop3 %>%
+                ggplot(aes(x = PC)) +
+                geom_col(aes(y = pct)) +
+                geom_line(aes(y = pct_cum, group = 1)) +
+                geom_point(aes(y = pct_cum)) +
+                geom_hline(yintercept = 95, colour = "red") +
+                geom_text(aes(0, 95, label = "95% cumulative variance", vjust = -1, hjust = -0.5, col = "red"), show.legend = F) +
+                labs(x = "Principal component", y = "Fraction variance explained (%)") +
+                scale_y_continuous(n.breaks = 20, limits = c(0, 100), expand = expansion(mult = 0, add = 0)) +
+                theme_classic(base_size = as.numeric(input$textSizeTSNE))
+              TSNEScree
+
+            }
+            )
             
             # output$tsneStatic2 <- renderPlot(
             #   {
