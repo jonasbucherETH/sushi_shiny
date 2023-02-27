@@ -250,6 +250,9 @@ observe({
               },
               width = as.numeric(input$plotWidthPCA),
               height = as.numeric(input$plotHeightPCA)
+              # height = function() {
+              #   session$clientData$output_pcaStatic_width
+              # }
               # , res = 96
             )
             

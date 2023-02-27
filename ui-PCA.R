@@ -77,9 +77,9 @@ tabItem(
         br(), br(),
         plotOutput(
           outputId = "pcaStatic",
-          # height = "80vh",
-          # width = "100%",
-          inline = T
+          height = "80vh",
+          width = "100%",
+          inline = F
         )
       ), # close box
     ), # close column

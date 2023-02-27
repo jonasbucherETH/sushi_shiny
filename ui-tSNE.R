@@ -61,7 +61,7 @@ tabItem(
           inputId = "initialDimsTSNE",
           label = "Number of dimensions kept in PCA step",
           min = 5, max = 100,
-          value = 20, step = 5
+          value = 20, step = 1
         ),
         numericInput(
           inputId = "perplexityTSNE",
@@ -279,7 +279,7 @@ tabItem(
       width = 12,
       box(
         title = "Scree Plot",
-        width = 6,
+        width = NULL,
         solidHeader = TRUE,
         status = "primary",
         plotOutput(
